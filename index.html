@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kinkajoo — Classic Games. Modern Digital Fun.</title>
+  <meta name="description" content="Kinkajoo develops award-winning digital games loved by millions worldwide — including the original Rummikub, TAKI, and more." />
+  <style>
+    /* ─── FONTS ─────────────────────────────────────────────────────── */
+    @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+    /* ─── CUSTOM PROPERTIES ─────────────────────────────────────────── */
+    :root {
+      --blue:        #009CDE;
+      --blue-light:  #33b5e8;
+      --blue-dark:   #007db2;
+      --pink:        #C31985;
+      --pink-light:  #d41e9a;
+      --orange:      #F58322;
+      --orange-light:#f7a050;
+      --green:       #5DBB46;
+      --green-light: #74cc60;
+      --green-dark:  #4aa338;
+      --dark:        #1A1A2E;
+      --dark-2:      #252540;
+      --gray-bg:     #F5F5F7;
+      --gray-mid:    #e8e8ec;
+      --white:       #FFFFFF;
+      --text:        #1A1A2E;
+      --text-muted:  #6b7080;
+      --radius-sm:   10px;
+      --radius-md:   16px;
+      --radius-lg:   24px;
+      --shadow-sm:   0 2px 12px rgba(0,156,222,0.08);
+      --shadow-md:   0 8px 32px rgba(0,156,222,0.12);
+      --shadow-lg:   0 16px 48px rgba(0,156,222,0.18);
+      --font:            'Avenir Next Condensed', 'Avenir Next', 'Avenir', 'Barlow Condensed', 'Futura', 'Century Gothic', 'Arial Narrow', sans-serif;
+      --transition:      0.25s cubic-bezier(0.4,0,0.2,1);
+      --transition-slow: 0.45s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ─── RESET & BASE ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: inherit; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    input, select, textarea, button { font-family: var(--font); }
+    body {
+      font-family: var(--font);
+      font-weight: 400;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* ─── CONTAINER ─────────────────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ─── SECTION LABELS & TITLES ───────────────────────────────────── */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .section-label img { height: 20px; width: auto; }
+
+    .section-title {
+      font-family: var(--font);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-family: var(--font);
+      font-size: 1.1rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--text-muted);
+      max-width: 560px;
+    }
+
+    /* ─── SECTION HEAD (logo + title in a row) ──────────────────────── */
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .section-head.centered { justify-content: center; }
+    .section-head .section-title { margin-bottom: 0; }
+    .section-logo-mark {
+      height: 52px;
+      width: auto;
+      flex-shrink: 0;
+    }
+    @media (max-width: 479px) {
+      .section-logo-mark { height: 38px; }
+      .section-head { gap: 12px; }
+    }
+
+    /* ─── INLINE LOGO (used inside body text) ───────────────────────── */
+    .inline-logo {
+      display: inline-block;
+      height: 1.05em;
+      width: auto;
+      vertical-align: middle;
+      margin: 0 3px;
+      position: relative;
+      top: -0.05em;
+    }
+
+    /* ─── BUTTONS ───────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: 50px;
+      padding: 14px 32px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform var(--transition), box-shadow var(--transition),
+                  background var(--transition), color var(--transition), border-color var(--transition);
+      white-space: nowrap;
+    }
+    .btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+    .btn-primary {
+      background: var(--blue);
+      color: var(--white);
+      box-shadow: 0 4px 20px rgba(0,156,222,0.35);
+    }
+    .btn-primary:hover {
+      background: var(--blue-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(0,156,222,0.45);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* ─── HEADER ────────────────────────────────────────────────────── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,156,222,0.07);
+      transition: box-shadow var(--transition);
+    }
+    .header.scrolled { box-shadow: 0 2px 24px rgba(26,26,46,0.10); }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .header-logo img { height: 46px; width: auto; display: block; }
+    .header-logo:focus-visible { outline: 3px solid var(--blue); border-radius: 4px; outline-offset: 4px; }
+
+    .nav { display: flex; align-items: center; gap: 4px; }
+
+    .nav-link {
+      font-family: var(--font);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      position: relative;
+      transition: color var(--transition);
+      --nav-accent: var(--blue);
+    }
+    .nav-link:nth-child(2) { --nav-accent: var(--pink);   }
+    .nav-link:nth-child(3) { --nav-accent: var(--orange); }
+    .nav-link:nth-child(4) { --nav-accent: var(--green);  }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 14px;
+      right: 14px;
+      height: 2px;
+      background: var(--nav-accent);
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition);
+    }
+    .nav-link:hover { color: var(--nav-accent); }
+    .nav-link:hover::after { transform: scaleX(1); }
+    .nav-link:focus-visible { outline: 3px solid var(--nav-accent); outline-offset: 2px; }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 44px;
+      height: 44px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition);
+    }
+    .hamburger:hover { background: var(--gray-bg); }
+    .hamburger:focus-visible { outline: 3px solid var(--blue); }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 767px) {
+      .hamburger { display: flex; }
+      .nav {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        position: absolute;
+        top: 76px;
+        left: 0; right: 0;
+        background: rgba(255,255,255,0.97);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 0 24px;
+        border-bottom: 1px solid transparent;
+        box-shadow: none;
+        max-height: 0;
+        overflow: hidden;
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition:
+          max-height    0.34s ease,
+          opacity       0.24s ease,
+          transform     0.24s cubic-bezier(0.4,0,0.2,1),
+          visibility    0s   0.24s,
+          padding       0.34s ease,
+          border-color  0.24s ease,
+          box-shadow    0.24s ease;
+      }
+      .nav.open {
+        max-height: 440px;
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+        padding: 20px 24px 32px;
+        border-bottom-color: var(--gray-mid);
+        box-shadow: 0 8px 32px rgba(26,26,46,0.12);
+        transition:
+          max-height    0.34s ease,
+          opacity       0.24s ease,
+          transform     0.24s cubic-bezier(0.4,0,0.2,1),
+          visibility    0s,
+          padding       0.34s ease,
+          border-color  0.24s ease,
+          box-shadow    0.24s ease;
+      }
+      .nav-link { width: 100%; padding: 16px 4px; font-size: 1.12rem; }
+      .nav-link::after { bottom: 12px; left: 4px; right: 4px; }
+    }
+
+    /* ─── HERO ──────────────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 800px 600px at  5% 10%, rgba(0,156,222,0.06)   0%, transparent 65%),
+        radial-gradient(ellipse 600px 500px at 93%  8%, rgba(195,25,133,0.05)  0%, transparent 65%),
+        radial-gradient(ellipse 500px 400px at 80% 92%, rgba(245,131,34,0.05)  0%, transparent 65%),
+        radial-gradient(ellipse 400px 340px at  5% 90%, rgba(93,187,70,0.04)   0%, transparent 65%),
+        var(--white);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      width: 52px; height: 13px;
+      border-radius: 20px;
+      background: var(--pink);
+      opacity: 0.14;
+      top: 23%; left: 9%;
+      transform: rotate(-18deg);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--orange);
+      opacity: 0.16;
+      top: 62%; right: 9%;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.11;
+      filter: blur(60px);
+      animation: floatBlob linear infinite;
+    }
+    .blob-1 { width: 520px; height: 520px; background: var(--blue);   top: -100px;  left: -120px; animation-duration: 18s; }
+    .blob-2 { width: 380px; height: 380px; background: var(--pink);   top: 10%;     right: -80px; animation-duration: 22s; animation-delay: -6s; }
+    .blob-3 { width: 300px; height: 300px; background: var(--orange); bottom: 5%;   left: 20%;    animation-duration: 16s; animation-delay: -4s; }
+    .blob-4 { width: 250px; height: 250px; background: var(--green);  bottom: 15%;  right: 15%;   animation-duration: 20s; animation-delay: -10s; }
+    .blob-5 { width: 200px; height: 200px; background: var(--blue);   top: 40%;     left: 45%;    animation-duration: 24s; animation-delay: -8s; }
+    .blob-6 { width: 160px; height: 160px; background: var(--pink);   bottom: -40px;left: 5%;     animation-duration: 14s; animation-delay: -3s; }
+
+    @keyframes floatBlob {
+      0%   { transform: translateY(0px)   scale(1);    }
+      33%  { transform: translateY(-28px) scale(1.04); }
+      66%  { transform: translateY(14px)  scale(0.97); }
+      100% { transform: translateY(0px)   scale(1);    }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 80px 24px 280px;
+      gap: 0;
+    }
+
+    .hero-logo {
+      width: min(360px, 84vw);
+      margin-bottom: 40px;
+      animation: heroEntrance 0.9s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    @media (min-width: 768px) {
+      .hero-logo { width: 400px; margin-bottom: 52px; }
+    }
+
+    @keyframes heroEntrance {
+      from { opacity: 0; transform: scale(0.93) translateY(14px); }
+      to   { opacity: 1; transform: scale(1)    translateY(0);    }
+    }
+
+    .hero-headline {
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      color: var(--text);
+      margin-bottom: 20px;
+      max-width: 720px;
+      animation: fadeSlideUp 0.8s cubic-bezier(0.4,0,0.2,1) 0.12s both;
+    }
+    .hero-headline .accent-blue { color: var(--blue); }
+
+    .hero-desc {
+      font-size: 1.18rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin-bottom: 40px;
+      animation: fadeSlideUp 0.8s cubic-bezier(0.4,0,0.2,1) 0.22s both;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeSlideUp 0.8s cubic-bezier(0.4,0,0.2,1) 0.32s both;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 172px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0.5;
+      animation: bounce 2.2s ease-in-out infinite;
+      z-index: 2;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity var(--transition);
+    }
+    .scroll-hint:hover { opacity: 0.85; }
+    .scroll-hint span { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+    .scroll-hint svg { width: 20px; height: 20px; }
+
+    .hero .announcement-strip {
+      position: absolute;
+      bottom: 220px;
+      left: 0;
+      right: 0;
+      z-index: 3;
+      background: transparent;
+      border: none;
+      padding: 8px 0;
+    }
+    .hero .ann-inner {
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+    }
+    .hero .ann-body {
+      flex: none;
+    }
+    .hero .ann-headline {
+      font-size: 0.92rem;
+      margin-bottom: 2px;
+      opacity: 0.85;
+    }
+    .hero .ann-sub {
+      font-size: 0.82rem;
+      opacity: 0.7;
+    }
+    .hero .ann-btn {
+      background: transparent;
+      border-color: rgba(0,156,222,0.45);
+      font-size: 0.78rem;
+      padding: 7px 16px;
+      opacity: 0.85;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(9px); }
+    }
+
+    /* ─── SECTION WRAPPER ───────────────────────────────────────────── */
+    .section     { padding: 96px 0; }
+    .section-alt { background: var(--gray-bg); }
+
+    /* ─── GAMES ─────────────────────────────────────────────────────── */
+    #games { background: linear-gradient(180deg, #fdf0f8 0%, var(--white) 55%); }
+
+    .games-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .games-header .section-desc { margin: 0 auto; }
+
+    /* ── Game Card ── */
+    .game-card {
+      background: linear-gradient(155deg, var(--card-accent-light) 0%, var(--white) 50%);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px 24px;
+      box-shadow: var(--shadow-sm);
+      border-top: 4px solid var(--card-accent, var(--blue));
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform var(--transition-slow), box-shadow var(--transition-slow);
+      will-change: transform;
+    }
+    .game-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .game-card[data-accent="pink"]   {
+      --card-accent:       var(--pink);
+      --card-accent-light: rgba(195,25,133,0.08);
+      --card-accent-dark:  #9e1570;
+    }
+    .game-card[data-accent="orange"] {
+      --card-accent:       var(--orange);
+      --card-accent-light: rgba(245,131,34,0.08);
+      --card-accent-dark:  #d4660e;
+    }
+    .game-card[data-accent="green"]  {
+      --card-accent:       var(--green);
+      --card-accent-light: rgba(93,187,70,0.08);
+      --card-accent-dark:  #4aa338;
+    }
+
+    /* Game icon — real image */
+    .game-icon {
+      width: 76px;
+      height: 76px;
+      border-radius: 18px;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--card-accent-light);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    }
+    .game-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      will-change: transform;
+    }
+    .game-card:hover .game-icon img {
+      transform: scale(1.07);
+    }
+
+    .game-name {
+      font-family: var(--font);
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .game-desc {
+      font-family: var(--font);
+      font-size: 0.97rem;
+      font-weight: 400;
+      line-height: 1.62;
+      color: var(--text-muted);
+    }
+
+    /* Read More */
+    .btn-read-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--pink);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: gap var(--transition), opacity var(--transition);
+      align-self: flex-start;
+    }
+    .btn-read-more:hover { gap: 9px; }
+    .btn-read-more:focus-visible { outline: 3px solid var(--pink); border-radius: 3px; outline-offset: 3px; }
+    .btn-read-more svg { width: 13px; height: 13px; transition: transform var(--transition); }
+    .btn-read-more:hover svg { transform: translateX(2px); }
+
+    /* ─── CARD IDENTITY ─────────────────────────────────────────────── */
+    .card-identity {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 8px;
+    }
+    .card-identity .update-badge { align-self: center; }
+
+
+    .card-btn-sm {
+      font-family: var(--font);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 4px 6px;
+      border-radius: 7px;
+      text-decoration: none;
+      overflow: hidden;
+      white-space: nowrap;
+      width: 100%;
+      transition: background var(--transition), color var(--transition), transform var(--transition);
+    }
+    .card-btn-sm svg { width: 10px; height: 10px; flex-shrink: 0; }
+    .card-btn-sm.dl  { background: var(--dark); color: var(--white); }
+    .card-btn-sm.dl:hover  { background: var(--pink); transform: translateY(-1px); }
+    .card-btn-sm.soc { background: rgba(195,25,133,0.08); color: var(--pink); }
+    .card-btn-sm.soc:hover { background: var(--pink); color: var(--white); transform: translateY(-1px); }
+
+    @media (max-width: 420px) {
+      .card-btn-sm { font-size: 0.62rem; padding: 5px 6px; gap: 4px; }
+      .card-btn-sm svg { width: 9px; height: 9px; }
+    }
+
+    /* Platform badges (used in modal) */
+    .badge {
+      font-family: var(--font);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 50px;
+      background: var(--card-accent-light);
+      color: var(--card-accent);
+      border: 1px solid currentColor;
+    }
+
+    /* ─── ABOUT ─────────────────────────────────────────────────────── */
+    #about { background: linear-gradient(180deg, #fff6ef 0%, var(--gray-bg) 60%); padding-top: 96px; }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 56px;
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .about-grid { grid-template-columns: 1fr 1fr; gap: 80px; }
+    }
+
+    .about-centered {
+      max-width: 680px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+    }
+    .about-centered .about-body { text-align: left; }
+
+    .about-body {
+      font-family: var(--font);
+      font-size: 1.07rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+    .about-body strong { color: var(--text); font-weight: 600; }
+
+    /* ─── CONTACT ───────────────────────────────────────────────────── */
+    #contact { background: linear-gradient(180deg, #f0f9ee 0%, var(--white) 55%); }
+    .contact-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .contact-header .section-desc { margin: 0 auto; }
+
+    .contact-form-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 48px 44px;
+      box-shadow: var(--shadow-md);
+    }
+    @media (max-width: 600px) {
+      .contact-form-wrap { padding: 32px 20px; }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text);
+      background: var(--gray-bg);
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color var(--transition), background var(--transition);
+      width: 100%;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 42px;
+      cursor: pointer;
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--blue); background: var(--white); }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #aab0bc; }
+
+    .form-row { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 480px) {
+      .form-row { grid-template-columns: 1fr 1fr; }
+      .form-row .form-group { margin-bottom: 0; }
+    }
+    .form-submit { width: 100%; margin-top: 8px; font-size: 1.05rem; padding: 16px 32px; }
+    #contact .form-submit {
+      background: var(--green);
+      box-shadow: 0 4px 20px rgba(93,187,70,0.30);
+    }
+    #contact .form-submit:hover {
+      background: var(--green-dark);
+      box-shadow: 0 8px 28px rgba(93,187,70,0.42);
+    }
+
+    /* Form success state */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .form-success.visible { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .success-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: rgba(93,187,70,0.12);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .success-icon svg { width: 32px; height: 32px; color: var(--green); }
+    .success-title { font-family: var(--font); font-size: 1.5rem; font-weight: 800; color: var(--text); }
+    .success-desc  { font-family: var(--font); font-size: 1rem; color: var(--text-muted); }
+
+    /* ─── COPYRIGHT BAR ─────────────────────────────────────────────── */
+    .copyright-bar {
+      background: var(--white);
+      color: var(--green);
+      border-top: 2px solid var(--green);
+      text-align: center;
+      padding: 16px 24px;
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ─── MODAL ─────────────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,26,46,0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      max-width: 620px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 40px;
+      position: relative;
+      transform: scale(0.92) translateY(20px);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+      box-shadow: 0 24px 80px rgba(26,26,46,0.40);
+    }
+    .modal-overlay.open .modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    /* Scrollbar for modal */
+    .modal-card::-webkit-scrollbar { width: 6px; }
+    .modal-card::-webkit-scrollbar-track { background: transparent; }
+    .modal-card::-webkit-scrollbar-thumb { background: var(--gray-mid); border-radius: 3px; }
+
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--gray-bg);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      color: var(--text);
+      font-family: var(--font);
+      transition: background var(--transition), transform var(--transition);
+      z-index: 2;
+    }
+    .modal-close:hover { background: var(--gray-mid); transform: rotate(90deg); }
+    .modal-close:focus-visible { outline: 3px solid var(--blue); }
+
+    .modal-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin-bottom: 24px;
+      padding-right: 44px;
+    }
+
+    .modal-icon {
+      flex-shrink: 0;
+      width: 88px; height: 88px;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+    }
+    .modal-icon img { width: 100%; height: 100%; object-fit: cover; }
+
+    .modal-meta { display: flex; flex-direction: column; gap: 10px; }
+
+    .modal-game-name {
+      font-family: var(--font);
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: var(--text);
+      line-height: 1.15;
+    }
+
+    .modal-platform-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+    .modal-platform-badges .badge { font-size: 0.72rem; padding: 4px 10px; }
+
+    .modal-divider {
+      border: none;
+      border-top: 1px solid var(--gray-mid);
+      margin: 20px 0;
+    }
+
+    .modal-section-label {
+      font-family: var(--font);
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .modal-desc {
+      font-family: var(--font);
+      font-size: 1.02rem;
+      font-weight: 400;
+      line-height: 1.72;
+      color: var(--text);
+      margin-bottom: 28px;
+    }
+
+    .modal-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .modal-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 11px 20px;
+      border-radius: 50px;
+      transition: all var(--transition);
+      cursor: pointer;
+    }
+    .modal-link:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+    .modal-link svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+    .modal-link.dl {
+      background: transparent;
+      color: var(--text);
+      padding: 4px 0;
+      border: none;
+    }
+    .modal-link.dl:hover {
+      opacity: 0.8;
+      transform: translateY(-2px);
+    }
+
+    .modal-link.soc {
+      background: var(--gray-bg);
+      color: var(--text);
+      border: 1px solid var(--gray-mid);
+    }
+    .modal-link.soc:hover {
+      background: var(--gray-mid);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 480px) {
+      .modal-card { padding: 28px 20px; }
+      .modal-header { flex-direction: column; gap: 16px; padding-right: 40px; }
+      .modal-icon { width: 72px; height: 72px; }
+      .modal-game-name { font-size: 1.4rem; }
+    }
+
+    /* ─── ANNOUNCEMENT STRIP ────────────────────────────────────────── */
+    .announcement-strip {
+      background: rgba(0,156,222,0.05);
+      border-top: 1px solid rgba(0,156,222,0.12);
+      border-bottom: 1px solid rgba(0,156,222,0.12);
+      padding: 20px 0;
+    }
+    .ann-inner {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .ann-pulse {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--blue);
+      flex-shrink: 0;
+      animation: pulseDot 2.4s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+      0%,100% { opacity:1; transform:scale(1); box-shadow:0 0 0 0 rgba(0,156,222,0.4); }
+      50%      { opacity:0.7; transform:scale(0.88); box-shadow:0 0 0 5px rgba(0,156,222,0); }
+    }
+    .ann-body { flex:1; min-width:200px; }
+    .ann-headline {
+      font-family: var(--font); font-size: 1rem; font-weight: 700;
+      color: var(--blue); letter-spacing: 0.02em; margin-bottom: 3px;
+    }
+    .ann-sub {
+      font-family: var(--font); font-size: 0.88rem;
+      color: var(--text-muted); line-height: 1.5;
+    }
+    .ann-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: var(--font); font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--blue); border: 1.5px solid var(--blue); border-radius: 50px;
+      padding: 10px 20px; white-space: nowrap;
+      transition: background var(--transition), color var(--transition);
+    }
+    .ann-btn:hover { background: var(--blue); color: var(--white); }
+    .ann-btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+    .ann-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+    @media (max-width: 639px) {
+      .ann-inner { gap: 14px; }
+      .ann-btn { align-self: stretch; justify-content: center; }
+    }
+
+    /* ─── CARD UPDATE BADGE ──────────────────────────────────────────── */
+    .update-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--font); font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: var(--pink); background: rgba(195,25,133,0.08);
+      border: 1px solid rgba(195,25,133,0.22); border-radius: 50px;
+      padding: 4px 11px; align-self: flex-start;
+    }
+    .update-badge::before {
+      content: ''; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--pink); flex-shrink: 0;
+    }
+
+    /* ─── GAMES SLIDER ──────────────────────────────────────────────── */
+    .slider-outer {
+      position: relative;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    .slider-viewport {
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+    }
+    .slider-track {
+      display: flex;
+      transition: transform 0.42s cubic-bezier(0.4,0,0.2,1);
+      will-change: transform;
+    }
+    .slider-track .game-card {
+      flex: 0 0 100%;
+      min-width: 100%;
+      grid-column: unset !important;
+      will-change: auto;
+      border-radius: var(--radius-lg);
+      min-height: 340px;
+    }
+    .slider-track .game-card:hover { transform: none; }
+
+    .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--pink);
+      border: 1.5px solid var(--pink);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: background var(--transition), border-color var(--transition),
+                  color var(--transition), box-shadow var(--transition);
+      color: var(--white);
+    }
+    .slider-arrow:hover {
+      background: var(--pink-light);
+      border-color: var(--pink-light);
+      color: var(--white);
+      box-shadow: var(--shadow-md);
+    }
+    .slider-arrow:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+    .slider-arrow svg { width: 18px; height: 18px; pointer-events: none; }
+    .slider-prev { left: -60px; }
+    .slider-next { right: -60px; }
+
+    .slider-nav {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+    .slider-nav-btn {
+      width: 60px; height: 60px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 3px solid transparent;
+      background: var(--white);
+      cursor: pointer;
+      padding: 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.09);
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      flex-shrink: 0;
+    }
+    .slider-nav-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .slider-nav-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .slider-nav-btn:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+
+    @media (min-width: 480px) and (max-width: 660px) {
+      .slider-prev { left: -20px; }
+      .slider-next { right: -20px; }
+    }
+    @media (max-width: 479px) {
+      .slider-prev { left: -16px; }
+      .slider-next { right: -16px; }
+      .slider-arrow { width: 36px; height: 36px; }
+      .slider-arrow svg { width: 14px; height: 14px; }
+      .slider-nav { gap: 10px; margin-top: 20px; }
+      .slider-nav-btn { width: 50px; height: 50px; border-radius: 12px; }
+    }
+
+    /* ─── SCROLL REVEAL ─────────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.4,0,0.2,1);
+      transition-delay: var(--reveal-delay, 0s);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── MOBILE-FIRST REFINEMENTS ─────────────────────────────────── */
+
+    /* Hero CTA: stack buttons full-width on small screens */
+    @media (max-width: 479px) {
+      .section           { padding: 64px 0; }
+      .games-header      { margin-bottom: 32px; }
+      .contact-header    { margin-bottom: 36px; }
+      .hero-content      { padding: 72px 20px 260px; }
+      .hero-desc         { font-size: 1.08rem; }
+      .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        width: 100%;
+      }
+      .hero-cta .btn { width: 100%; }
+    }
+
+    /* Game cards: comfortable padding on small screens */
+    @media (max-width: 639px) {
+      .game-card { padding: 24px 20px 20px; }
+    }
+
+    /* ─── REDUCED MOTION ────────────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration:       0.01ms !important;
+        animation-iteration-count: 1     !important;
+        transition-duration:      0.01ms !important;
+      }
+      .reveal       { opacity: 1; transform: none; }
+      .blob         { animation: none; }
+      .scroll-hint  { animation: none; }
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<header class="header" id="site-header" role="banner">
+  <div class="container">
+    <div class="header-inner">
+      <a href="#hero" class="header-logo" aria-label="Kinkajoo — go to homepage">
+        <img src="blueLogo.png" alt="Kinkajoo" />
+      </a>
+
+      <button class="hamburger" id="hamburger"
+              aria-label="Toggle navigation menu"
+              aria-expanded="false"
+              aria-controls="main-nav">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav id="main-nav" class="nav" role="navigation" aria-label="Main navigation">
+        <a class="nav-link" href="#hero">Home</a>
+        <a class="nav-link" href="#games">Our Games &amp; Apps</a>
+        <a class="nav-link" href="#about">About Us</a>
+        <a class="nav-link" href="#contact">Contact Us</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero" id="hero" aria-label="Hero — welcome">
+  <div class="hero-bg" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+    <span class="blob blob-3"></span>
+    <span class="blob blob-4"></span>
+    <span class="blob blob-5"></span>
+    <span class="blob blob-6"></span>
+  </div>
+
+  <div class="hero-content">
+    <img src="blueLogo.png" alt="Kinkajoo" class="hero-logo" />
+    <p class="hero-desc">
+      Award-winning digital games loved by millions worldwide — including
+      the original Rummikub&#174;, TAKI, and more.
+    </p>
+    <div class="hero-cta">
+      <a href="#games" class="btn btn-primary">Explore Games &amp; Apps</a>
+      <a href="#contact" class="btn btn-primary">Contact Us</a>
+    </div>
+  </div>
+
+  <div class="announcement-strip" role="region" aria-label="Rummikub update announcement">
+    <div class="container">
+      <div class="ann-inner">
+        <span class="ann-pulse" aria-hidden="true"></span>
+        <div class="ann-body">
+          <p class="ann-headline">Rummikub updates are coming soon</p>
+          <p class="ann-sub">A refreshed Rummikub experience is on the way. Visit the official Rummikub website to stay updated.</p>
+        </div>
+        <a href="http://www.rummikub.com" class="ann-btn" target="_blank" rel="noopener noreferrer" aria-label="Visit the official Rummikub website">
+          Visit Rummikub Website
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <a href="#games" class="scroll-hint" aria-label="Scroll to Games and Apps">
+    <span>Scroll</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </a>
+</section>
+
+<!-- ═══════════════ GAMES & APPS ═══════════════ -->
+<section class="section" id="games" aria-labelledby="games-heading">
+  <div class="container">
+    <div class="games-header">
+      <div class="section-head centered">
+        <img src="pinkLogo.png" alt="" class="section-logo-mark" aria-hidden="true" />
+        <h2 class="section-title" id="games-heading" style="color:var(--pink)">Our Games &amp; Apps</h2>
+      </div>
+    </div>
+
+    <div class="slider-outer" role="region" aria-label="Games and apps carousel" aria-roledescription="carousel">
+      <button class="slider-arrow slider-prev" id="sliderPrev" aria-label="Previous game">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="slider-viewport">
+        <div class="slider-track" id="sliderTrack">
+
+      <!-- Card 1: Rummikub -->
+      <article class="game-card" data-accent="pink" role="listitem">
+        <div class="card-identity">
+          <div class="game-icon"><img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/ICON_BLACK_1024x1024.png" alt="Rummikub" loading="lazy" /></div>
+          <h3 class="game-name">Rummikub</h3>
+          <div class="update-badge">Updates coming soon</div>
+        </div>
+        <p class="game-desc">The original Rummikub — one of the most popular family games, played by millions of people all over the world. The unique combination of tactical thinking, luck and tense competition has made this classic family game one of the most successful for the past 60 years!</p>
+        <button class="btn-read-more" data-links-only="true" data-modal="game-1" aria-label="Download and follow Rummikub">
+          Download &amp; Follow
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </article>
+
+      <!-- Card 2: Rummikub Premium -->
+      <article class="game-card" data-accent="pink" role="listitem">
+        <div class="card-identity">
+          <div class="game-icon"><img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/ICON-1024x1024.png" alt="Rummikub Premium" loading="lazy" /></div>
+          <h3 class="game-name">Rummikub Premium</h3>
+        </div>
+        <p class="game-desc">The original Rummikub Premium version. The familiar game play and rules — without ads. Available in 11 languages. Also available on ELAL planes.</p>
+        <button class="btn-read-more" data-links-only="true" data-modal="game-2" aria-label="Download and follow Rummikub Premium">
+          Download &amp; Follow
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </article>
+
+      <!-- Card 3: TAKI -->
+      <article class="game-card" data-accent="pink" role="listitem">
+        <div class="card-identity">
+          <div class="game-icon"><img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/icon_rounded-1024x1024.png" alt="TAKI" loading="lazy" /></div>
+          <h3 class="game-name">TAKI</h3>
+        </div>
+        <p class="game-desc">TAKI is a card game that combines an equal share of luck and strategy, which is the secret for its perfect game flow. Action cards, exciting rules and Super Taki cards will hook you right from the start. Play against 1–3 players.</p>
+        <button class="btn-read-more" data-links-only="true" data-modal="game-3" aria-label="Download and follow TAKI">
+          Download &amp; Follow
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </article>
+
+      <!-- Card 4: Rummikub Score Timer -->
+      <article class="game-card" data-accent="pink" role="listitem">
+        <div class="card-identity">
+          <div class="game-icon"><img src="https://kinkajoo-apps.com/wp-content/uploads/2025/01/SCORE_TIMER_1024x1024.png" alt="Rummikub Score Timer" loading="lazy" /></div>
+          <h3 class="game-name">Rummikub&#174; Score Timer</h3>
+        </div>
+        <p class="game-desc">The original Rummikub&#174; score timer makes your Rummikub experience much more comfortable. Stop using stoppers, pencils and papers and get a tailor-made game management solution.</p>
+        <button class="btn-read-more" data-links-only="true" data-modal="game-4" aria-label="Download Rummikub Score Timer">
+          Download &amp; Follow
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </article>
+
+      <!-- Card 5: Rummikub Junior -->
+      <article class="game-card" data-accent="pink" role="listitem">
+        <div class="card-identity">
+          <div class="game-icon"><img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/junior_icon_rounded_1024x1024.png" alt="Rummikub Junior" loading="lazy" /></div>
+          <h3 class="game-name">Rummikub&#174; Junior</h3>
+        </div>
+        <p class="game-desc">Rummikub&#174; Junior is a unique, challenging educational game based on the original Rummikub&#174;. It develops cognitive skills including identifying numbers and colors, forming sets, and logical reasoning.</p>
+        <button class="btn-read-more" data-links-only="true" data-modal="game-5" aria-label="Download Rummikub Junior">
+          Download &amp; Follow
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </article>
+
+        </div><!-- /slider-track -->
+      </div><!-- /slider-viewport -->
+      <button class="slider-arrow slider-next" id="sliderNext" aria-label="Next game">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div><!-- /slider-outer -->
+
+    <div class="slider-nav" id="sliderNav" aria-label="Select a game">
+      <button class="slider-nav-btn" data-idx="0" aria-label="Rummikub">
+        <img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/ICON_BLACK_1024x1024.png" alt="Rummikub" loading="lazy" />
+      </button>
+      <button class="slider-nav-btn" data-idx="1" aria-label="Rummikub Premium">
+        <img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/ICON-1024x1024.png" alt="Rummikub Premium" loading="lazy" />
+      </button>
+      <button class="slider-nav-btn" data-idx="2" aria-label="TAKI">
+        <img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/icon_rounded-1024x1024.png" alt="TAKI" loading="lazy" />
+      </button>
+      <button class="slider-nav-btn" data-idx="3" aria-label="Rummikub Score Timer">
+        <img src="https://kinkajoo-apps.com/wp-content/uploads/2025/01/SCORE_TIMER_1024x1024.png" alt="Rummikub Score Timer" loading="lazy" />
+      </button>
+      <button class="slider-nav-btn" data-idx="4" aria-label="Rummikub Junior">
+        <img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/junior_icon_rounded_1024x1024.png" alt="Rummikub Junior" loading="lazy" />
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section class="section section-alt" id="about" aria-labelledby="about-heading">
+  <div class="container">
+    <div class="about-centered">
+      <div class="section-head centered">
+        <img src="orangeLogo.png" alt="" class="section-logo-mark" aria-hidden="true" />
+        <h2 class="section-title" id="about-heading" style="color:var(--orange)">About Us</h2>
+      </div>
+
+      <p class="about-body">
+        <img src="orangeLogo.png" alt="Kinkajoo" class="inline-logo" /> Ltd was founded by
+        <strong>Nadav Fogel &amp; Erez Bar</strong> in 2012 with the goal of creating fun games
+        and apps for everyone to enjoy. After more than 20 years of experience combined in the
+        digital casual games industry, they decided to start something fresh.
+      </p>
+      <p class="about-body">
+        Now working with a team of talented developers, designers and game creators to make
+        this dream come true. Based in <strong>Tel-Aviv, Israel</strong>, the self-funded,
+        fully independent company has already developed a number of great apps including the
+        original Rummikub&#174;, TAKI and more.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section class="section" id="contact" aria-labelledby="contact-heading">
+  <div class="container">
+    <div class="contact-header">
+      <div class="section-head centered">
+        <img src="greenLogo.png" alt="" class="section-logo-mark" aria-hidden="true" />
+        <h2 class="section-title" id="contact-heading" style="color:var(--green)">Contact Us</h2>
+      </div>
+      <p class="section-desc">
+        Whether you're looking for answers, would like to report or solve a problem,
+        or just want to let us know how we did — contact us right here.
+        We'll help you resolve your issues as quickly as possible.
+      </p>
+    </div>
+
+    <div class="contact-form-wrap" role="region" aria-label="Contact form">
+      <form id="contact-form" novalidate aria-label="Send us a message">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" autocomplete="name" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <select id="subject" name="subject" required>
+            <option value="" disabled selected>Choose a subject…</option>
+            <option value="support">Report / Solve a Problem</option>
+            <option value="general">General Inquiry</option>
+            <option value="business">Business Partnership</option>
+            <option value="feedback">Leave Feedback</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Write your message here…" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary form-submit">Send Message</button>
+      </form>
+
+      <div class="form-success" id="form-success" role="alert" aria-live="polite">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <p class="success-title">Message sent!</p>
+        <p class="success-desc">Thank you for reaching out. We'll get back to you as quickly as possible.</p>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<div class="copyright-bar" role="contentinfo">All Rights Reserved &copy; Kinkajoo 2026</div>
+
+<!-- ═══════════════ MODAL ═══════════════ -->
+<div id="game-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-game-name">
+  <div class="modal-card" id="modal-card">
+    <button class="modal-close" id="modal-close" aria-label="Close details">&#10005;</button>
+    <div class="modal-header">
+      <div class="modal-icon">
+        <img id="modal-icon-img" src="" alt="" />
+      </div>
+      <div class="modal-meta">
+        <h2 class="modal-game-name" id="modal-game-name"></h2>
+        <div class="modal-platform-badges" id="modal-platform-badges"></div>
+      </div>
+    </div>
+    <hr class="modal-divider" />
+    <p class="modal-section-label" id="modal-about-label">About This Game</p>
+    <p class="modal-desc" id="modal-desc"></p>
+    <p class="modal-section-label" id="modal-links-label">Download &amp; Follow</p>
+    <div class="modal-links" id="modal-links"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ JAVASCRIPT ═══════════════ -->
+<script>
+  /* ── Hamburger ──────────────────────────────────────── */
+  const hamburger = document.getElementById('hamburger');
+  const nav       = document.getElementById('main-nav');
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+    nav.setAttribute('aria-hidden', String(!isOpen));
+  });
+  nav.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      nav.setAttribute('aria-hidden', 'true');
+    });
+  });
+
+  /* ── Header scroll shadow ───────────────────────────── */
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 8);
+  }, { passive: true });
+
+  /* ── Contact form ───────────────────────────────────── */
+  const form    = document.getElementById('contact-form');
+  const success = document.getElementById('form-success');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    form.style.display = 'none';
+    success.classList.add('visible');
+  });
+
+  /* ── Games data ─────────────────────────────────────── */
+  const SVG = {
+    apple:  '<img src="downloadApple.png" alt="App Store" style="height:44px;width:148px;object-fit:contain;display:block;">',
+    play:   '<img src="downloadgoogleplay.png" alt="Google Play" style="height:44px;width:148px;object-fit:contain;display:block;">',
+    globe:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+    fb:     '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
+    ig:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
+    yt:     '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+  };
+
+  const GAMES = {
+    'game-1': {
+      name: 'Rummikub',
+      icon: 'https://kinkajoo-apps.com/wp-content/uploads/2024/12/ICON_BLACK_1024x1024.png',
+      platforms: ['iOS', 'Android', 'Web'],
+      desc: 'The original Rummikub (not Rummy nor Rummi or Remy) is one of the most popular family games, played by millions of people all over the world. The unique combination of tactical thinking, luck and tense competition has made this classic family game to one of the most successful games for the past 60 years! Play against friends or strangers online. Available on iOS, Android, smart TVs and internet browsers. Arrange the tiles to create the smartest color and numbers combinations. Will you be the first player to place all tiles and win the match?',
+      links: [
+        { cls: 'dl', icon: 'apple', label: 'App Store',   url: 'https://apps.apple.com/us/app/rummikub/id1015322991' },
+        { cls: 'dl', icon: 'play',  label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.rummikubfree' },
+        { cls: 'soc', icon: 'globe', label: 'Website',    url: 'http://www.rummikub.com' },
+        { cls: 'soc', icon: 'fb',    label: 'Facebook',   url: 'https://www.facebook.com/TheOriginalRummikub' },
+        { cls: 'soc', icon: 'ig',    label: 'Instagram',  url: 'https://www.instagram.com/theoriginalrummikub/' },
+        { cls: 'soc', icon: 'yt',    label: 'YouTube',    url: 'https://www.youtube.com/watch?v=yRkf5wVq9Y8' },
+      ]
+    },
+    'game-2': {
+      name: 'Rummikub Premium',
+      icon: 'https://kinkajoo-apps.com/wp-content/uploads/2024/12/ICON-1024x1024.png',
+      platforms: ['iOS', 'Android', 'Web'],
+      desc: 'The original Rummikub Premium version. The familiar game play and rules without ads. Available in English, German, French, Dutch, Korean, Spanish, Chinese, Hebrew, Polish, Portuguese and Turkish. Play against friends or strangers online. Choose your opponents number (1–3 players) and turn time limit (30, 60, 120 seconds). Arrange the tiles to create the smartest color and numbers combinations. This version of the game is also available on ELAL planes.',
+      links: [
+        { cls: 'dl', icon: 'apple', label: 'App Store',   url: 'https://apps.apple.com/us/app/rummikub/id973113361' },
+        { cls: 'dl', icon: 'play',  label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.kinkajoo.RummikubHD' },
+        { cls: 'soc', icon: 'globe', label: 'Website',    url: 'http://www.rummikub.com' },
+        { cls: 'soc', icon: 'fb',    label: 'Facebook',   url: 'https://www.facebook.com/TheOriginalRummikub' },
+        { cls: 'soc', icon: 'yt',    label: 'YouTube',    url: 'https://www.youtube.com/watch?v=yRkf5wVq9Y8' },
+      ]
+    },
+    'game-3': {
+      name: 'TAKI',
+      icon: 'https://kinkajoo-apps.com/wp-content/uploads/2024/12/icon_rounded-1024x1024.png',
+      platforms: ['iOS', 'Android'],
+      desc: 'TAKI is a card game that combines an equal share of luck and strategy, which is the secret for its perfect game flow. Action cards, exciting rules and Super Taki cards will hook you right from the start and satisfy you like no other game. Play against 1–3 players.',
+      links: [
+        { cls: 'dl', icon: 'apple', label: 'App Store',   url: 'https://apps.apple.com/us/app/taki/id1263854454' },
+        { cls: 'dl', icon: 'play',  label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.kinkajoo.taki' },
+        { cls: 'soc', icon: 'globe', label: 'Website',    url: 'https://www.shafirgames.com/ourgames/taki' },
+        { cls: 'soc', icon: 'fb',    label: 'Facebook',   url: 'https://www.facebook.com/groups/2089980354646620/' },
+        { cls: 'soc', icon: 'yt',    label: 'YouTube',    url: 'https://www.youtube.com/watch?v=5-pFhiwwAME' },
+      ]
+    },
+    'game-4': {
+      name: 'Rummikub® Score Timer',
+      icon: 'https://kinkajoo-apps.com/wp-content/uploads/2025/01/SCORE_TIMER_1024x1024.png',
+      platforms: ['iOS', 'Android'],
+      desc: 'The original Rummikub® score timer makes your Rummikub experience much more comfortable. Stop using stoppers, pencils and papers and get a tailor-made game management solution for a perfect Rummikub game.',
+      links: [
+        { cls: 'dl', icon: 'apple', label: 'App Store',   url: 'https://apps.apple.com/us/app/rummikub-score-timer/id1280370021' },
+        { cls: 'dl', icon: 'play',  label: 'Google Play', url: 'https://play.google.com/store/apps/details?id=com.kinkajoo.rummikubscoretimer' },
+      ]
+    },
+    'game-5': {
+      name: 'Rummikub® Junior',
+      icon: 'https://kinkajoo-apps.com/wp-content/uploads/2024/12/junior_icon_rounded_1024x1024.png',
+      platforms: ['iOS'],
+      desc: 'Rummikub® Junior is a unique, challenging educational game based on the original Rummikub®. It develops cognitive skills including identifying numbers and colors, forming and dissolving groups, building sets of consecutive numbers, and logical reasoning.',
+      links: [
+        { cls: 'dl', icon: 'apple', label: 'App Store',   url: 'https://apps.apple.com/us/app/rummikub-jr/id1208457228' },
+      ]
+    },
+  };
+
+  /* ── Modal logic ────────────────────────────────────── */
+  const overlay   = document.getElementById('game-modal');
+  const closeBtn  = document.getElementById('modal-close');
+  let lastFocused = null;
+
+  function openModal(id, linksOnly) {
+    const g = GAMES[id];
+    if (!g) return;
+    lastFocused = document.activeElement;
+
+    document.getElementById('modal-icon-img').src = g.icon;
+    document.getElementById('modal-icon-img').alt = g.name + ' icon';
+    document.getElementById('modal-game-name').textContent = g.name;
+
+    const badgesEl = document.getElementById('modal-platform-badges');
+    badgesEl.innerHTML = g.platforms.map(p =>
+      `<span class="badge" style="--card-accent:var(--pink);--card-accent-light:rgba(195,25,133,0.08)">${p}</span>`
+    ).join('');
+
+    const descEl      = document.getElementById('modal-desc');
+    const aboutLabel  = document.getElementById('modal-about-label');
+    const divider     = document.querySelector('.modal-divider');
+    descEl.textContent = g.desc;
+    const hide = linksOnly ? 'none' : '';
+    descEl.style.display     = hide;
+    aboutLabel.style.display = hide;
+    divider.style.display    = hide;
+
+    const linksEl = document.getElementById('modal-links');
+    linksEl.innerHTML = g.links.map(l =>
+      `<a href="${l.url}" class="modal-link ${l.cls}" target="_blank" rel="noopener noreferrer" aria-label="${l.label}">${SVG[l.icon]}${l.cls === 'dl' ? '' : ' ' + l.label}</a>`
+    ).join('');
+
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+
+  document.querySelectorAll('.btn-read-more').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn.dataset.modal, btn.dataset.linksOnly === 'true'));
+  });
+
+  /* ── Scroll-reveal ──────────────────────────────────────── */
+  (function () {
+    // Bail gracefully if IntersectionObserver not supported
+    if (!('IntersectionObserver' in window)) return;
+
+    // Single elements with optional fixed delay
+    [
+      ['.games-header',     0   ],
+      ['.about-centered',   0   ],
+      ['.contact-header',   0   ],
+      ['.contact-form-wrap',0.10],
+    ].forEach(([sel, delay]) => {
+      document.querySelectorAll(sel).forEach(el => {
+        el.classList.add('reveal');
+        if (delay) el.style.setProperty('--reveal-delay', delay + 's');
+      });
+    });
+
+    // Reveal slider as one unit
+    document.querySelectorAll('.slider-outer, .slider-nav').forEach(el => {
+      el.classList.add('reveal');
+    });
+
+
+// Observe all tagged elements
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -36px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  }());
+
+  /* ── Games Slider ────────────────────────────────── */
+  (function () {
+    const track   = document.getElementById('sliderTrack');
+    const prevBtn = document.getElementById('sliderPrev');
+    const nextBtn = document.getElementById('sliderNext');
+    const navBtns = document.querySelectorAll('.slider-nav-btn');
+    if (!track) return;
+    const cards  = track.querySelectorAll('.game-card');
+    const total  = cards.length;
+    const ACCENTS = ['#C31985','#C31985','#C31985','#C31985','#C31985'];
+    if (!total) return;
+
+    let current = 0;
+    let touchStartX = 0;
+    let mouseDown = false, mouseStartX = 0;
+
+    function goTo(idx) {
+      current = ((idx % total) + total) % total;
+      track.style.transform = `translateX(-${current * 100}%)`;
+      navBtns.forEach((btn, i) => {
+        const on = i === current;
+        btn.classList.toggle('active', on);
+        btn.style.borderColor = on ? ACCENTS[i] : 'transparent';
+        btn.style.boxShadow   = on ? `0 0 0 3px ${ACCENTS[i]}33` : '';
+      });
+    }
+
+    prevBtn.addEventListener('click', () => goTo(current - 1));
+    nextBtn.addEventListener('click', () => goTo(current + 1));
+    navBtns.forEach((btn, i) => btn.addEventListener('click', () => goTo(i)));
+
+    /* Touch swipe */
+    track.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend',   e => {
+      const diff = touchStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 44) goTo(current + (diff > 0 ? 1 : -1));
+    }, { passive: true });
+
+    /* Mouse drag */
+    track.addEventListener('mousedown',  e => { mouseDown = true; mouseStartX = e.clientX; });
+    track.addEventListener('mousemove',  e => { if (mouseDown) e.preventDefault(); });
+    track.addEventListener('mouseup',    e => {
+      if (!mouseDown) return; mouseDown = false;
+      const diff = mouseStartX - e.clientX;
+      if (Math.abs(diff) > 44) goTo(current + (diff > 0 ? 1 : -1));
+    });
+    track.addEventListener('mouseleave', () => { mouseDown = false; });
+
+    goTo(0);
+  }());
+
+</script>
+</body>
+</html>
