@@ -110,6 +110,7 @@
       height: 52px;
       width: auto;
       flex-shrink: 0;
+      mix-blend-mode: multiply;
     }
     @media (max-width: 479px) {
       .section-logo-mark { height: 38px; }
@@ -125,6 +126,7 @@
       margin: 0 3px;
       position: relative;
       top: -0.05em;
+      mix-blend-mode: multiply;
     }
 
     /* ─── BUTTONS ───────────────────────────────────────────────────── */
@@ -180,7 +182,7 @@
       height: 76px;
     }
 
-    .header-logo img { height: 46px; width: auto; display: block; }
+    .header-logo img { height: 46px; width: auto; display: block; mix-blend-mode: multiply; }
     .header-logo:focus-visible { outline: 3px solid var(--blue); border-radius: 4px; outline-offset: 4px; }
 
     .nav { display: flex; align-items: center; gap: 4px; }
@@ -375,6 +377,7 @@
       width: min(360px, 84vw);
       margin-bottom: 40px;
       animation: heroEntrance 0.9s cubic-bezier(0.16,1,0.3,1) both;
+      mix-blend-mode: multiply;
     }
     @media (min-width: 768px) {
       .hero-logo { width: 400px; margin-bottom: 52px; }
@@ -1020,21 +1023,23 @@
       margin: 0 auto;
     }
     .slider-viewport {
-      overflow: hidden;
+      overflow-x: scroll;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
       border-radius: var(--radius-lg);
+      scrollbar-width: none;
     }
+    .slider-viewport::-webkit-scrollbar { display: none; }
     .slider-track {
       display: flex;
-      transition: transform 0.42s cubic-bezier(0.4,0,0.2,1);
-      will-change: transform;
     }
     .slider-track .game-card {
       flex: 0 0 100%;
       min-width: 100%;
       grid-column: unset !important;
-      will-change: auto;
       border-radius: var(--radius-lg);
       min-height: 340px;
+      scroll-snap-align: start;
     }
     .slider-track .game-card:hover { transform: none; }
 
@@ -1200,21 +1205,6 @@
     </div>
   </div>
 
-  <div class="announcement-strip" role="region" aria-label="Rummikub update announcement">
-    <div class="container">
-      <div class="ann-inner">
-        <span class="ann-pulse" aria-hidden="true"></span>
-        <div class="ann-body">
-          <p class="ann-headline">Rummikub updates are coming soon</p>
-          <p class="ann-sub">A refreshed Rummikub experience is on the way. Visit the official Rummikub website to stay updated.</p>
-        </div>
-        <a href="http://www.rummikub.com" class="ann-btn" target="_blank" rel="noopener noreferrer" aria-label="Visit the official Rummikub website">
-          Visit Rummikub Website
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
 
   <a href="#games" class="scroll-hint" aria-label="Scroll to Games and Apps">
     <span>Scroll</span>
@@ -1481,8 +1471,8 @@
 
   /* ── Games data ─────────────────────────────────────── */
   const SVG = {
-    apple:  '<img src="downloadApple.png" alt="App Store" style="height:44px;width:148px;object-fit:contain;display:block;">',
-    play:   '<img src="downloadgoogleplay.png" alt="Google Play" style="height:44px;width:148px;object-fit:contain;display:block;">',
+    apple:  '<img src="downloadApple.png" alt="App Store" style="height:44px;width:148px;object-fit:fill;display:block;">',
+    play:   '<img src="downloadgoogleplay.png" alt="Google Play" style="height:44px;width:148px;object-fit:fill;display:block;">',
     globe:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
     fb:     '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
     ig:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
@@ -1642,23 +1632,20 @@
 
   /* ── Games Slider ────────────────────────────────── */
   (function () {
-    const track   = document.getElementById('sliderTrack');
-    const prevBtn = document.getElementById('sliderPrev');
-    const nextBtn = document.getElementById('sliderNext');
-    const navBtns = document.querySelectorAll('.slider-nav-btn');
+    const track    = document.getElementById('sliderTrack');
+    const viewport = track && track.parentElement;
+    const prevBtn  = document.getElementById('sliderPrev');
+    const nextBtn  = document.getElementById('sliderNext');
+    const navBtns  = document.querySelectorAll('.slider-nav-btn');
     if (!track) return;
-    const cards  = track.querySelectorAll('.game-card');
-    const total  = cards.length;
+    const total   = track.querySelectorAll('.game-card').length;
     const ACCENTS = ['#C31985','#C31985','#C31985','#C31985','#C31985'];
     if (!total) return;
 
     let current = 0;
-    let touchStartX = 0;
-    let mouseDown = false, mouseStartX = 0;
 
-    function goTo(idx) {
+    function updateNav(idx) {
       current = ((idx % total) + total) % total;
-      track.style.transform = `translateX(-${current * 100}%)`;
       navBtns.forEach((btn, i) => {
         const on = i === current;
         btn.classList.toggle('active', on);
@@ -1667,28 +1654,34 @@
       });
     }
 
+    function goTo(idx) {
+      const next = ((idx % total) + total) % total;
+      viewport.scrollTo({ left: next * viewport.offsetWidth, behavior: 'smooth' });
+      updateNav(next);
+    }
+
     prevBtn.addEventListener('click', () => goTo(current - 1));
     nextBtn.addEventListener('click', () => goTo(current + 1));
     navBtns.forEach((btn, i) => btn.addEventListener('click', () => goTo(i)));
 
-    /* Touch swipe */
-    track.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
-    track.addEventListener('touchend',   e => {
-      const diff = touchStartX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 44) goTo(current + (diff > 0 ? 1 : -1));
+    /* Sync nav when user swipes natively */
+    viewport.addEventListener('scroll', () => {
+      const idx = Math.round(viewport.scrollLeft / viewport.offsetWidth);
+      if (idx !== current) updateNav(idx);
     }, { passive: true });
 
-    /* Mouse drag */
+    /* Mouse drag for desktop */
+    let mouseDown = false, mouseStartX = 0;
     track.addEventListener('mousedown',  e => { mouseDown = true; mouseStartX = e.clientX; });
     track.addEventListener('mousemove',  e => { if (mouseDown) e.preventDefault(); });
     track.addEventListener('mouseup',    e => {
       if (!mouseDown) return; mouseDown = false;
       const diff = mouseStartX - e.clientX;
-      if (Math.abs(diff) > 44) goTo(current + (diff > 0 ? 1 : -1));
+      if (Math.abs(diff) > 40) goTo(current + (diff > 0 ? 1 : -1));
     });
     track.addEventListener('mouseleave', () => { mouseDown = false; });
 
-    goTo(0);
+    updateNav(0);
   }());
 
 </script>
