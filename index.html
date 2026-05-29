@@ -110,7 +110,7 @@
       height: 52px;
       width: auto;
       flex-shrink: 0;
-      mix-blend-mode: multiply;
+      filter: url(#white-to-transparent);
     }
     @media (max-width: 479px) {
       .section-logo-mark { height: 38px; }
@@ -126,7 +126,7 @@
       margin: 0 3px;
       position: relative;
       top: -0.05em;
-      mix-blend-mode: multiply;
+      filter: url(#white-to-transparent);
     }
 
     /* ─── BUTTONS ───────────────────────────────────────────────────── */
@@ -182,7 +182,7 @@
       height: 76px;
     }
 
-    .header-logo img { height: 46px; width: auto; display: block; mix-blend-mode: multiply; }
+    .header-logo img { height: 46px; width: auto; display: block; filter: url(#white-to-transparent); }
     .header-logo:focus-visible { outline: 3px solid var(--blue); border-radius: 4px; outline-offset: 4px; }
 
     .nav { display: flex; align-items: center; gap: 4px; }
@@ -376,8 +376,7 @@
       width: min(360px, 84vw);
       margin-bottom: 40px;
       animation: heroEntrance 0.9s cubic-bezier(0.16,1,0.3,1) both;
-      mix-blend-mode: multiply;
-      isolation: auto;
+      filter: url(#white-to-transparent);
     }
     @media (min-width: 768px) {
       .hero-logo { width: 400px; margin-bottom: 52px; }
@@ -1156,6 +1155,19 @@
   </style>
 </head>
 <body>
+
+<!-- Hidden SVG filter: converts white pixels to transparent -->
+<svg style="display:none" aria-hidden="true">
+  <defs>
+    <filter id="white-to-transparent">
+      <feColorMatrix type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+               -1 -1 -1 0 3"/>
+    </filter>
+  </defs>
+</svg>
 
 <!-- ═══════════════ HEADER ═══════════════ -->
 <header class="header" id="site-header" role="banner">
