@@ -824,6 +824,44 @@
     .modal-card::-webkit-scrollbar-track { background: transparent; }
     .modal-card::-webkit-scrollbar-thumb { background: var(--gray-mid); border-radius: 3px; }
 
+    /* ─── MODAL NAV ARROWS ──────────────────────────────── */
+    .modal-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .modal-nav-arrow {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--gray-bg);
+      border: 1.5px solid var(--gray-mid);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      transition: background var(--transition), border-color var(--transition), transform var(--transition);
+      flex-shrink: 0;
+    }
+    .modal-nav-arrow:hover { background: var(--pink); border-color: var(--pink); color: var(--white); transform: scale(1.08); }
+    .modal-nav-arrow:focus-visible { outline: 3px solid var(--pink); outline-offset: 3px; }
+    .modal-nav-arrow svg { width: 16px; height: 16px; pointer-events: none; }
+    .modal-nav-dots {
+      display: flex; gap: 7px; align-items: center;
+    }
+    .modal-nav-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gray-mid);
+      border: none; cursor: pointer; padding: 0;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .modal-nav-dot.active { background: var(--pink); transform: scale(1.3); }
+
+    /* swipe hint on mobile */
+    @media (max-width: 540px) {
+      .modal-nav-arrow { width: 36px; height: 36px; }
+    }
+
     .modal-close {
       position: absolute;
       top: 18px;
@@ -899,12 +937,6 @@
       margin-bottom: 28px;
     }
 
-    .modal-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
     .modal-link {
       display: inline-flex;
       align-items: center;
@@ -921,25 +953,55 @@
     .modal-link:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
     .modal-link svg { width: 15px; height: 15px; flex-shrink: 0; }
 
+    /* Download badge buttons (App Store / Google Play) */
     .modal-link.dl {
       background: transparent;
-      color: var(--text);
-      padding: 4px 0;
       border: none;
+      padding: 0;
     }
-    .modal-link.dl:hover {
-      opacity: 0.8;
-      transform: translateY(-2px);
-    }
+    .modal-link.dl:hover { opacity: 0.85; transform: translateY(-2px); }
 
+    /* Social icon buttons (Website, Facebook, Instagram, YouTube) */
     .modal-link.soc {
       background: var(--gray-bg);
-      color: var(--text);
       border: 1px solid var(--gray-mid);
+      padding: 10px 14px;
+      gap: 7px;
     }
-    .modal-link.soc:hover {
-      background: var(--gray-mid);
-      transform: translateY(-1px);
+    .modal-link.soc:hover { background: var(--gray-mid); transform: translateY(-1px); }
+
+    /* Image sizing inside links */
+    .modal-btn-img { display: block; }
+    .modal-btn-img--badge {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+      background: transparent;
+    }
+    .modal-btn-img--icon {
+      height: 26px;
+      width: 26px;
+      object-fit: contain;
+      background: transparent;
+    }
+
+    /* Links grid: badges full-row, icons in a row */
+    .modal-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .modal-links-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .modal-links-socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
     }
 
     @media (max-width: 480px) {
@@ -1412,6 +1474,15 @@
 <div id="game-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-game-name">
   <div class="modal-card" id="modal-card">
     <button class="modal-close" id="modal-close" aria-label="Close details">&#10005;</button>
+    <div class="modal-nav">
+      <button class="modal-nav-arrow" id="modal-prev" aria-label="Previous app">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="modal-nav-dots" id="modal-nav-dots"></div>
+      <button class="modal-nav-arrow" id="modal-next" aria-label="Next app">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
     <div class="modal-header">
       <div class="modal-icon">
         <img id="modal-icon-img" src="" alt="" />
@@ -1467,12 +1538,12 @@
 
   /* ── Games data ─────────────────────────────────────── */
   const SVG = {
-    apple:  '<img src="downloadApple.png" alt="App Store" style="height:44px;width:148px;object-fit:fill;display:block;">',
-    play:   '<img src="downloadgoogleplay.png" alt="Google Play" style="height:44px;width:148px;object-fit:fill;display:block;">',
-    globe:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
-    fb:     '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>',
-    ig:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>',
-    yt:     '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>',
+    apple:  '<img src="downloadApple.png"      alt="App Store"   class="modal-btn-img modal-btn-img--badge">',
+    play:   '<img src="downloadgoogleplay.png" alt="Google Play" class="modal-btn-img modal-btn-img--badge">',
+    globe:  '<img src="website.png"    alt="Website"     class="modal-btn-img modal-btn-img--icon">',
+    fb:     '<img src="facebook.png"   alt="Facebook"    class="modal-btn-img modal-btn-img--icon">',
+    ig:     '<img src="instagram.png"  alt="Instagram"   class="modal-btn-img modal-btn-img--icon">',
+    yt:     '<img src="youtube.png"    alt="YouTube"     class="modal-btn-img modal-btn-img--icon">',
   };
 
   const GAMES = {
@@ -1540,36 +1611,84 @@
   /* ── Modal logic ────────────────────────────────────── */
   const overlay   = document.getElementById('game-modal');
   const closeBtn  = document.getElementById('modal-close');
+  const modalCard = document.getElementById('modal-card');
+  const prevBtn   = document.getElementById('modal-prev');
+  const nextBtn   = document.getElementById('modal-next');
+  const dotsEl    = document.getElementById('modal-nav-dots');
   let lastFocused = null;
 
-  function openModal(id, linksOnly) {
-    const g = GAMES[id];
+  const GAME_IDS = ['game-1','game-2','game-3','game-4','game-5'];
+  let currentModalIdx = 0;
+  let modalLinksOnly  = true;
+
+  function renderModal(idx) {
+    const id = GAME_IDS[idx];
+    const g  = GAMES[id];
     if (!g) return;
-    lastFocused = document.activeElement;
 
     document.getElementById('modal-icon-img').src = g.icon;
     document.getElementById('modal-icon-img').alt = g.name + ' icon';
     document.getElementById('modal-game-name').textContent = g.name;
 
-    const badgesEl = document.getElementById('modal-platform-badges');
-    badgesEl.innerHTML = g.platforms.map(p =>
-      `<span class="badge" style="--card-accent:var(--pink);--card-accent-light:rgba(195,25,133,0.08)">${p}</span>`
-    ).join('');
+    document.getElementById('modal-platform-badges').innerHTML = '';
 
-    const descEl      = document.getElementById('modal-desc');
-    const aboutLabel  = document.getElementById('modal-about-label');
-    const divider     = document.querySelector('.modal-divider');
+    const descEl     = document.getElementById('modal-desc');
+    const aboutLabel = document.getElementById('modal-about-label');
+    const divider    = document.querySelector('.modal-divider');
     descEl.textContent = g.desc;
-    const hide = linksOnly ? 'none' : '';
+    const hide = modalLinksOnly ? 'none' : '';
     descEl.style.display     = hide;
     aboutLabel.style.display = hide;
     divider.style.display    = hide;
 
+    const badges  = g.links.filter(l => l.cls === 'dl');
+    const socials = g.links.filter(l => l.cls === 'soc');
     const linksEl = document.getElementById('modal-links');
-    linksEl.innerHTML = g.links.map(l =>
-      `<a href="${l.url}" class="modal-link ${l.cls}" target="_blank" rel="noopener noreferrer" aria-label="${l.label}">${SVG[l.icon]}${l.cls === 'dl' ? '' : ' ' + l.label}</a>`
-    ).join('');
+    linksEl.innerHTML = '';
 
+    if (badges.length) {
+      const row = document.createElement('div');
+      row.className = 'modal-links-badges';
+      row.innerHTML = badges.map(l =>
+        `<a href="${l.url}" class="modal-link dl" target="_blank" rel="noopener noreferrer" aria-label="${l.label}">${SVG[l.icon]}</a>`
+      ).join('');
+      linksEl.appendChild(row);
+    }
+
+    if (socials.length) {
+      const row = document.createElement('div');
+      row.className = 'modal-links-socials';
+      row.innerHTML = socials.map(l =>
+        `<a href="${l.url}" class="modal-link soc" target="_blank" rel="noopener noreferrer" aria-label="${l.label}">${SVG[l.icon]} <span style="font-size:0.82rem;font-weight:700;letter-spacing:0.04em">${l.label}</span></a>`
+      ).join('');
+      linksEl.appendChild(row);
+    }
+
+    /* dots */
+    dotsEl.querySelectorAll('.modal-nav-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+  }
+
+  function openModal(id, linksOnly) {
+    const idx = GAME_IDS.indexOf(id);
+    if (idx === -1) return;
+    lastFocused    = document.activeElement;
+    currentModalIdx = idx;
+    modalLinksOnly  = linksOnly;
+
+    /* build dots once */
+    if (!dotsEl.children.length) {
+      GAME_IDS.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className  = 'modal-nav-dot';
+        d.setAttribute('aria-label', 'Go to app ' + (i + 1));
+        d.addEventListener('click', () => { currentModalIdx = i; renderModal(i); });
+        dotsEl.appendChild(d);
+      });
+    }
+
+    renderModal(idx);
     overlay.classList.add('open');
     document.body.style.overflow = 'hidden';
     closeBtn.focus();
@@ -1581,9 +1700,29 @@
     if (lastFocused) lastFocused.focus();
   }
 
+  function modalNav(dir) {
+    currentModalIdx = ((currentModalIdx + dir) + GAME_IDS.length) % GAME_IDS.length;
+    renderModal(currentModalIdx);
+  }
+
+  prevBtn.addEventListener('click', () => modalNav(-1));
+  nextBtn.addEventListener('click', () => modalNav(1));
   closeBtn.addEventListener('click', closeModal);
   overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && overlay.classList.contains('open')) closeModal(); });
+  document.addEventListener('keydown', e => {
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'Escape')      closeModal();
+    if (e.key === 'ArrowLeft')   modalNav(-1);
+    if (e.key === 'ArrowRight')  modalNav(1);
+  });
+
+  /* ── Touch swipe inside modal ───────────────────────── */
+  let touchStartX = 0;
+  modalCard.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  modalCard.addEventListener('touchend',   e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) modalNav(diff > 0 ? 1 : -1);
+  }, { passive: true });
 
   document.querySelectorAll('.btn-read-more').forEach(btn => {
     btn.addEventListener('click', () => openModal(btn.dataset.modal, btn.dataset.linksOnly === 'true'));
