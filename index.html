@@ -619,6 +619,13 @@
       line-height: 1.2;
     }
 
+    .rummikub-card-logo {
+      display: block;
+      width: 70%;
+      max-width: 180px;
+      height: auto;
+      margin: 6px auto 14px;
+    }
     .game-desc {
       font-family: var(--font);
       font-size: 0.97rem;
@@ -1366,6 +1373,7 @@
           <div class="game-icon"><img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/ICON_BLACK_1024x1024.png" alt="Rummikub®" loading="lazy" /></div>
           <h3 class="game-name">Rummikub®</h3>
         </div>
+        <img src="rummikub.png" alt="Rummikub® logo" class="rummikub-card-logo" />
         <p class="game-desc">The original Rummikub® (not Rummy nor Rummi or Remy) is one of the most popular family games, played by millions of people all over the world. The unique combination of tactical thinking, luck and tense competition has made this classic family game to one of the most successful games for the past 60 years! Play against friends or strangers online. Available on iOS, Android, smart TVs and internet browsers. Arrange the tiles to create the smartest color and numbers combinations. Will you be the first player to place all tiles and win the match?</p>
         <button class="btn-read-more" data-links-only="true" data-modal="game-1" aria-label="Download and follow Rummikub®">
           Download &amp; Follow
@@ -1910,7 +1918,7 @@
       t.getContext('2d').drawImage(c, x0, y0, t.width, t.height, 0, 0, t.width, t.height);
       img.src = t.toDataURL();
     }
-    document.querySelectorAll('.hero-inline-logo').forEach(function(img) {
+    document.querySelectorAll('.hero-inline-logo, .rummikub-card-logo').forEach(function(img) {
       if (img.complete && img.naturalWidth) { removeBg(img); }
       else { img.addEventListener('load', function() { removeBg(img); }); }
     });
