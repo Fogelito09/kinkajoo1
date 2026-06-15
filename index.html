@@ -915,10 +915,11 @@
 
     .modal-header {
       display: flex;
-      align-items: flex-start;
-      gap: 20px;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
       margin-bottom: 24px;
-      padding-right: 44px;
     }
 
     .modal-icon {
@@ -930,7 +931,7 @@
     }
     .modal-icon img { width: 100%; height: 100%; object-fit: cover; }
 
-    .modal-meta { display: flex; flex-direction: column; gap: 10px; }
+    .modal-meta { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
     .modal-game-name {
       font-family: var(--font);
@@ -1045,7 +1046,6 @@
 
     @media (max-width: 480px) {
       .modal-card { padding: 28px 20px; }
-      .modal-header { flex-direction: column; gap: 16px; padding-right: 40px; }
       .modal-icon { width: 72px; height: 72px; }
       .modal-game-name { font-size: 1.4rem; }
     }
