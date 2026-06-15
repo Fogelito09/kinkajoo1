@@ -443,21 +443,21 @@
     .hero-headline .accent-blue { color: var(--blue); }
 
     .hero-desc {
-      font-size: 1.32rem;
+      font-size: 1.48rem;
       font-weight: 400;
       line-height: 1.65;
       color: var(--text-muted);
-      max-width: 560px;
+      max-width: 600px;
       margin-bottom: 40px;
       animation: fadeSlideUp 0.8s cubic-bezier(0.4,0,0.2,1) 0.22s both;
     }
     .hero-inline-logo {
-      height: 1.5em;
       width: auto;
       vertical-align: middle;
-      mix-blend-mode: multiply;
       display: inline-block;
     }
+    .hero-inline-rummikub { height: 2.2em; }
+    .hero-inline-taki     { height: 1.7em; }
 
     .hero-cta {
       display: flex;
@@ -1326,7 +1326,7 @@
     <img src="ChatGPT Image Jun 15, 2026, 05_58_57 PM.png" alt="Kinkajoo" class="hero-logo" />
     <p class="hero-desc">
       Award-winning digital games loved by millions worldwide — including
-      the original <img src="rummikub.png" alt="Rummikub®" class="hero-inline-logo">,&nbsp;<img src="taki.png" alt="TAKI" class="hero-inline-logo">, and more.
+      the original <img src="rummikub.png" alt="Rummikub®" class="hero-inline-logo hero-inline-rummikub">,&nbsp;<img src="taki.png" alt="TAKI" class="hero-inline-logo hero-inline-taki">, and more.
     </p>
     <div class="hero-cta">
       <a href="#games" class="btn btn-outline-pink">Explore Games &amp; Apps</a>
@@ -1876,6 +1876,31 @@
     track.addEventListener('mouseleave', () => { mouseDown = false; });
 
     updateNav(0);
+  }());
+
+  /* ── Remove white/gray checkerboard from inline hero logos ── */
+  (function () {
+    function removeBg(img) {
+      const c = document.createElement('canvas');
+      c.width  = img.naturalWidth;
+      c.height = img.naturalHeight;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const id = ctx.getImageData(0, 0, c.width, c.height);
+      const d  = id.data;
+      for (let i = 0; i < d.length; i += 4) {
+        const r = d[i], g = d[i+1], b = d[i+2];
+        const brightness = (r + g + b) / 3;
+        const range = Math.max(r, g, b) - Math.min(r, g, b);
+        if (brightness > 200 && range < 40) d[i+3] = 0;
+      }
+      ctx.putImageData(id, 0, 0);
+      img.src = c.toDataURL();
+    }
+    document.querySelectorAll('.hero-inline-logo').forEach(function(img) {
+      if (img.complete && img.naturalWidth) { removeBg(img); }
+      else { img.addEventListener('load', function() { removeBg(img); }); }
+    });
   }());
 
 </script>
