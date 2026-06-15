@@ -456,8 +456,8 @@
       vertical-align: middle;
       display: inline-block;
     }
-    .hero-inline-rummikub { height: 2.2em; margin-left: -0.2em; }
-    .hero-inline-taki     { height: 1.7em; margin-left: 0.35em; margin-right: 0.25em; }
+    .hero-inline-rummikub { height: 2.2em; }
+    .hero-inline-taki     { height: 1.7em; }
 
     .hero-cta {
       display: flex;
@@ -1888,14 +1888,27 @@
       ctx.drawImage(img, 0, 0);
       const id = ctx.getImageData(0, 0, c.width, c.height);
       const d  = id.data;
+      // Remove neutral (white/gray checkerboard) pixels
       for (let i = 0; i < d.length; i += 4) {
         const r = d[i], g = d[i+1], b = d[i+2];
-        const brightness = (r + g + b) / 3;
-        const range = Math.max(r, g, b) - Math.min(r, g, b);
-        if (brightness > 200 && range < 40) d[i+3] = 0;
+        if ((r + g + b) / 3 > 200 && Math.max(r, g, b) - Math.min(r, g, b) < 40) d[i+3] = 0;
       }
       ctx.putImageData(id, 0, 0);
-      img.src = c.toDataURL();
+      // Trim transparent padding — find tight bounding box of visible pixels
+      let x0 = c.width, y0 = c.height, x1 = 0, y1 = 0;
+      for (let y = 0; y < c.height; y++) {
+        for (let x = 0; x < c.width; x++) {
+          if (d[(y * c.width + x) * 4 + 3] > 10) {
+            if (x < x0) x0 = x; if (x > x1) x1 = x;
+            if (y < y0) y0 = y; if (y > y1) y1 = y;
+          }
+        }
+      }
+      const t = document.createElement('canvas');
+      t.width  = x1 - x0 + 1;
+      t.height = y1 - y0 + 1;
+      t.getContext('2d').drawImage(c, x0, y0, t.width, t.height, 0, 0, t.width, t.height);
+      img.src = t.toDataURL();
     }
     document.querySelectorAll('.hero-inline-logo').forEach(function(img) {
       if (img.complete && img.naturalWidth) { removeBg(img); }
