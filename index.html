@@ -410,7 +410,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 80px 24px 280px;
+      padding: 40px 24px 60px;
       gap: 0;
     }
 
@@ -471,21 +471,17 @@
     }
 
     .scroll-hint {
-      position: absolute;
-      bottom: 172px;
-      left: 50%;
-      transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 6px;
       opacity: 0.5;
       animation: bounce 2.2s ease-in-out infinite;
-      z-index: 2;
       color: inherit;
       text-decoration: none;
       cursor: pointer;
       transition: opacity var(--transition);
+      margin-top: 12px;
     }
     .scroll-hint:hover { opacity: 0.85; }
     .scroll-hint span { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
@@ -1243,7 +1239,7 @@
       .section           { padding: 64px 0; }
       .games-header      { margin-bottom: 32px; }
       .contact-header    { margin-bottom: 36px; }
-      .hero-content      { padding: 72px 20px 260px; }
+      .hero-content      { padding: 36px 20px 48px; }
       .hero-desc         { font-size: 1.08rem; }
       .hero-cta { align-items: stretch; gap: 12px; width: 100%; }
       .hero-cta-top { flex-direction: column; gap: 12px; }
@@ -1319,16 +1315,14 @@
         <a href="#contact" class="btn btn-outline-green">Contact Us</a>
       </div>
       <a href="#about" class="btn btn-outline-orange">About Us</a>
+      <a href="#games" class="scroll-hint" aria-label="Scroll to Games and Apps">
+        <span>Scroll</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </a>
     </div>
   </div>
-
-
-  <a href="#games" class="scroll-hint" aria-label="Scroll to Games and Apps">
-    <span>Scroll</span>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <polyline points="6 9 12 15 18 9"/>
-    </svg>
-  </a>
 </section>
 
 <!-- ═══════════════ GAMES & APPS ═══════════════ -->
