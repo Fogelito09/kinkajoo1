@@ -461,15 +461,13 @@
       animation: fadeSlideUp 0.8s cubic-bezier(0.4,0,0.2,1) 0.32s both;
     }
     .hero-cta-top {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
       gap: 16px;
-      width: 100%;
-      max-width: 460px;
+      justify-content: center;
     }
-    .hero-cta > .btn-outline-pink {
-      width: 460px;
-      max-width: 100%;
+    .hero-cta .btn,
+    .hero-cta-top .btn {
+      width: 220px;
     }
 
     @keyframes fadeSlideUp {
@@ -1251,7 +1249,7 @@
       .hero-content      { padding: 4px 20px 48px; }
       .hero-desc         { font-size: 1.08rem; }
       .hero-cta { align-items: stretch; gap: 12px; }
-      .hero-cta-top { grid-template-columns: 1fr; max-width: 100%; }
+      .hero-cta-top { flex-direction: column; }
       .hero-cta .btn, .hero-cta-top .btn { width: 100%; }
     }
 
