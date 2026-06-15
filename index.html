@@ -206,16 +206,28 @@
       left: 0;
       right: 0;
       z-index: 200;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-bottom: 1px solid transparent;
+      transition: background 0.35s ease, box-shadow var(--transition), border-color 0.35s ease;
+    }
+    .header.scrolled {
       background: rgba(255,255,255,0.88);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0,156,222,0.07);
-      transition: box-shadow var(--transition), opacity 0.35s ease;
+      border-bottom-color: rgba(0,156,222,0.07);
+      box-shadow: 0 2px 24px rgba(26,26,46,0.10);
+    }
+    .header-logo {
       opacity: 0;
       pointer-events: none;
+      transition: opacity 0.35s ease;
     }
-    .header.scrolled { box-shadow: 0 2px 24px rgba(26,26,46,0.10); }
-    .header.visible  { opacity: 1; pointer-events: all; }
+    .header.scrolled .header-logo {
+      opacity: 1;
+      pointer-events: all;
+    }
 
     .header-inner {
       display: flex;
@@ -228,6 +240,10 @@
     .header-logo:focus-visible { outline: 3px solid var(--blue); border-radius: 4px; outline-offset: 4px; }
 
     .nav { display: flex; align-items: center; gap: 4px; }
+    @media (min-width: 768px) {
+      .nav { opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+      .header.scrolled .nav { opacity: 1; pointer-events: all; }
+    }
 
     .nav-link {
       font-family: var(--font);
@@ -1588,9 +1604,7 @@
   /* ── Header scroll show/shadow ─────────────────────── */
   const header = document.getElementById('site-header');
   window.addEventListener('scroll', () => {
-    const sy = window.scrollY;
-    header.classList.toggle('scrolled', sy > 8);
-    header.classList.toggle('visible',  sy > 60);
+    header.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
 
   /* ── Contact form ───────────────────────────────────── */
