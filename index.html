@@ -27,7 +27,7 @@
       --gray-mid:    #e8e8ec;
       --white:       #FFFFFF;
       --text:        #1A1A2E;
-      --text-muted:  #6b7080;
+      --text-muted:  #4a4d5e;
       --radius-sm:   10px;
       --radius-md:   16px;
       --radius-lg:   24px;
@@ -160,6 +160,32 @@
     }
     .btn-primary:active { transform: translateY(0); }
 
+    .btn-outline-pink {
+      background: var(--white);
+      color: var(--dark);
+      border-color: var(--pink);
+      box-shadow: 0 4px 20px rgba(195,25,133,0.15);
+    }
+    .btn-outline-pink:hover {
+      background: rgba(195,25,133,0.06);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(195,25,133,0.25);
+    }
+    .btn-outline-pink:active { transform: translateY(0); }
+
+    .btn-outline-green {
+      background: var(--white);
+      color: var(--dark);
+      border-color: var(--green);
+      box-shadow: 0 4px 20px rgba(93,187,70,0.15);
+    }
+    .btn-outline-green:hover {
+      background: rgba(93,187,70,0.06);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(93,187,70,0.25);
+    }
+    .btn-outline-green:active { transform: translateY(0); }
+
     /* ─── HEADER ────────────────────────────────────────────────────── */
     .header {
       position: sticky;
@@ -169,9 +195,12 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid rgba(0,156,222,0.07);
-      transition: box-shadow var(--transition);
+      transition: box-shadow var(--transition), opacity 0.35s ease;
+      opacity: 0;
+      pointer-events: none;
     }
     .header.scrolled { box-shadow: 0 2px 24px rgba(26,26,46,0.10); }
+    .header.visible  { opacity: 1; pointer-events: all; }
 
     .header-inner {
       display: flex;
@@ -485,7 +514,7 @@
     .section-alt { background: var(--gray-bg); }
 
     /* ─── GAMES ─────────────────────────────────────────────────────── */
-    #games { background: linear-gradient(180deg, #fdf0f8 0%, var(--white) 55%); }
+    #games { background: linear-gradient(180deg, #fdf0f8 0%, var(--white) 55%); padding-top: 64px; }
 
     .games-header {
       text-align: center;
@@ -529,9 +558,9 @@
 
     /* Game icon — real image */
     .game-icon {
-      width: 76px;
-      height: 76px;
-      border-radius: 18px;
+      width: 100px;
+      height: 100px;
+      border-radius: 22px;
       overflow: hidden;
       flex-shrink: 0;
       background: var(--card-accent-light);
@@ -1137,7 +1166,7 @@
       flex-wrap: wrap;
     }
     .slider-nav-btn {
-      width: 60px; height: 60px;
+      width: 70px; height: 70px;
       border-radius: 14px;
       overflow: hidden;
       border: 3px solid transparent;
@@ -1162,7 +1191,7 @@
       .slider-arrow { width: 36px; height: 36px; }
       .slider-arrow svg { width: 14px; height: 14px; }
       .slider-nav { gap: 10px; margin-top: 20px; }
-      .slider-nav-btn { width: 50px; height: 50px; border-radius: 12px; }
+      .slider-nav-btn { width: 58px; height: 58px; border-radius: 12px; }
     }
 
     /* ─── SCROLL REVEAL ─────────────────────────────────────────────── */
@@ -1259,8 +1288,8 @@
       the original Rummikub&#174;, TAKI, and more.
     </p>
     <div class="hero-cta">
-      <a href="#games" class="btn btn-primary">Explore Games &amp; Apps</a>
-      <a href="#contact" class="btn btn-primary">Contact Us</a>
+      <a href="#games" class="btn btn-outline-pink">Explore Games &amp; Apps</a>
+      <a href="#contact" class="btn btn-outline-green">Contact Us</a>
     </div>
   </div>
 
@@ -1278,7 +1307,6 @@
   <div class="container">
     <div class="games-header">
       <div class="section-head centered">
-        <img src="pinkLogo.png" alt="" class="section-logo-mark" aria-hidden="true" />
         <h2 class="section-title" id="games-heading" style="color:var(--pink)">Our Games &amp; Apps</h2>
       </div>
     </div>
@@ -1388,19 +1416,18 @@
   <div class="container">
     <div class="about-centered">
       <div class="section-head centered">
-        <img src="orangeLogo.png" alt="" class="section-logo-mark" aria-hidden="true" />
         <h2 class="section-title" id="about-heading" style="color:var(--orange)">About Us</h2>
       </div>
 
       <p class="about-body">
-        <img src="orangeLogo.png" alt="Kinkajoo" class="inline-logo" /> Ltd was founded by
-        <strong>Nadav Fogel &amp; Erez Bar</strong> in 2012 with the goal of creating fun games
+        Kinkajoo Ltd was founded by
+        Nadav Fogel &amp; Erez Bar in 2012 with the goal of creating fun games
         and apps for everyone to enjoy. After more than 20 years of experience combined in the
         digital casual games industry, they decided to start something fresh.
       </p>
       <p class="about-body">
         Now working with a team of talented developers, designers and game creators to make
-        this dream come true. Based in <strong>Tel-Aviv, Israel</strong>, the self-funded,
+        this dream come true. Based in Tel-Aviv, Israel, the self-funded,
         fully independent company has already developed a number of great apps including the
         original Rummikub&#174;, TAKI and more.
       </p>
@@ -1413,7 +1440,6 @@
   <div class="container">
     <div class="contact-header">
       <div class="section-head centered">
-        <img src="greenLogo.png" alt="" class="section-logo-mark" aria-hidden="true" />
         <h2 class="section-title" id="contact-heading" style="color:var(--green)">Contact Us</h2>
       </div>
       <p class="section-desc">
@@ -1434,17 +1460,6 @@
             <label for="email">Email</label>
             <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required />
           </div>
-        </div>
-
-        <div class="form-group">
-          <label for="subject">Subject</label>
-          <select id="subject" name="subject" required>
-            <option value="" disabled selected>Choose a subject…</option>
-            <option value="support">Report / Solve a Problem</option>
-            <option value="general">General Inquiry</option>
-            <option value="business">Business Partnership</option>
-            <option value="feedback">Leave Feedback</option>
-          </select>
         </div>
 
         <div class="form-group">
@@ -1522,10 +1537,12 @@
     });
   });
 
-  /* ── Header scroll shadow ───────────────────────────── */
+  /* ── Header scroll show/shadow ─────────────────────── */
   const header = document.getElementById('site-header');
   window.addEventListener('scroll', () => {
-    header.classList.toggle('scrolled', window.scrollY > 8);
+    const sy = window.scrollY;
+    header.classList.toggle('scrolled', sy > 8);
+    header.classList.toggle('visible',  sy > 60);
   }, { passive: true });
 
   /* ── Contact form ───────────────────────────────────── */
