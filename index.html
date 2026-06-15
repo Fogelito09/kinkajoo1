@@ -410,19 +410,19 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 16px 24px 60px;
+      padding: 4px 24px 60px;
       gap: 0;
       width: 100%;
     }
 
     .hero-logo {
       width: min(360px, 84vw);
-      margin-bottom: 0;
+      margin-bottom: 20px;
       animation: heroEntrance 0.9s cubic-bezier(0.16,1,0.3,1) both;
       filter: url('#remove-logo-bg');
     }
     @media (min-width: 768px) {
-      .hero-logo { width: 400px; margin-bottom: 0; }
+      .hero-logo { width: 400px; margin-bottom: 24px; }
     }
 
     @keyframes heroEntrance {
@@ -448,7 +448,6 @@
       line-height: 1.65;
       color: var(--text-muted);
       max-width: 500px;
-      margin-top: -12px;
       margin-bottom: 40px;
       animation: fadeSlideUp 0.8s cubic-bezier(0.4,0,0.2,1) 0.22s both;
     }
@@ -1245,7 +1244,7 @@
       .section           { padding: 64px 0; }
       .games-header      { margin-bottom: 32px; }
       .contact-header    { margin-bottom: 36px; }
-      .hero-content      { padding: 12px 20px 48px; }
+      .hero-content      { padding: 4px 20px 48px; }
       .hero-desc         { font-size: 1.08rem; }
       .hero-cta { align-items: stretch; gap: 12px; width: 100%; }
       .hero-cta-top { flex-direction: column; gap: 12px; }
