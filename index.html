@@ -997,22 +997,26 @@
     .modal-link.soc {
       background: var(--gray-bg);
       border: 1px solid var(--gray-mid);
-      padding: 10px 14px;
-      gap: 7px;
+      padding: 10px;
+      gap: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      justify-content: center;
     }
     .modal-link.soc:hover { background: var(--gray-mid); transform: translateY(-1px); }
 
     /* Image sizing inside links */
     .modal-btn-img { display: block; }
     .modal-btn-img--badge {
-      height: 48px;
-      width: auto;
+      height: 44px;
+      width: 148px;
       object-fit: contain;
       background: transparent;
     }
     .modal-btn-img--icon {
-      height: 26px;
-      width: 26px;
+      height: 28px;
+      width: 28px;
       object-fit: contain;
       background: transparent;
     }
@@ -1021,19 +1025,21 @@
     .modal-links {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
     .modal-links-badges {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       align-items: center;
+      justify-content: center;
     }
     .modal-links-socials {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       align-items: center;
+      justify-content: center;
     }
 
     @media (max-width: 480px) {
@@ -1679,7 +1685,7 @@
       const row = document.createElement('div');
       row.className = 'modal-links-socials';
       row.innerHTML = socials.map(l =>
-        `<a href="${l.url}" class="modal-link soc" target="_blank" rel="noopener noreferrer" aria-label="${l.label}">${SVG[l.icon]} <span style="font-size:0.82rem;font-weight:700;letter-spacing:0.04em">${l.label}</span></a>`
+        `<a href="${l.url}" class="modal-link soc" target="_blank" rel="noopener noreferrer" aria-label="${l.label}">${SVG[l.icon]}</a>`
       ).join('');
       linksEl.appendChild(row);
     }
