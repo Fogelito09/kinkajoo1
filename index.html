@@ -186,6 +186,19 @@
     }
     .btn-outline-green:active { transform: translateY(0); }
 
+    .btn-outline-orange {
+      background: var(--white);
+      color: var(--dark);
+      border-color: var(--orange);
+      box-shadow: 0 4px 20px rgba(245,131,34,0.15);
+    }
+    .btn-outline-orange:hover {
+      background: rgba(245,131,34,0.06);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(245,131,34,0.25);
+    }
+    .btn-outline-orange:active { transform: translateY(0); }
+
     /* ─── HEADER ────────────────────────────────────────────────────── */
     .header {
       position: fixed;
@@ -440,10 +453,16 @@
 
     .hero-cta {
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      animation: fadeSlideUp 0.8s cubic-bezier(0.4,0,0.2,1) 0.32s both;
+    }
+    .hero-cta-top {
+      display: flex;
       gap: 16px;
       flex-wrap: wrap;
       justify-content: center;
-      animation: fadeSlideUp 0.8s cubic-bezier(0.4,0,0.2,1) 0.32s both;
     }
 
     @keyframes fadeSlideUp {
@@ -1226,13 +1245,9 @@
       .contact-header    { margin-bottom: 36px; }
       .hero-content      { padding: 72px 20px 260px; }
       .hero-desc         { font-size: 1.08rem; }
-      .hero-cta {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-        width: 100%;
-      }
-      .hero-cta .btn { width: 100%; }
+      .hero-cta { align-items: stretch; gap: 12px; width: 100%; }
+      .hero-cta-top { flex-direction: column; gap: 12px; }
+      .hero-cta .btn, .hero-cta-top .btn { width: 100%; }
     }
 
     /* Game cards: comfortable padding on small screens */
@@ -1299,8 +1314,11 @@
       the original Rummikub&#174;, TAKI, and more.
     </p>
     <div class="hero-cta">
-      <a href="#games" class="btn btn-outline-pink">Explore Games &amp; Apps</a>
-      <a href="#contact" class="btn btn-outline-green">Contact Us</a>
+      <div class="hero-cta-top">
+        <a href="#games" class="btn btn-outline-pink">Explore Games &amp; Apps</a>
+        <a href="#contact" class="btn btn-outline-green">Contact Us</a>
+      </div>
+      <a href="#about" class="btn btn-outline-orange">About Us</a>
     </div>
   </div>
 
