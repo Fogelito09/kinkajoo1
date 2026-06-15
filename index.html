@@ -211,7 +211,7 @@
       height: 76px;
     }
 
-    .header-logo img { height: 46px; width: auto; display: block; }
+    .header-logo img { height: 46px; width: auto; display: block; mix-blend-mode: multiply; }
     .header-logo:focus-visible { outline: 3px solid var(--blue); border-radius: 4px; outline-offset: 4px; }
 
     .nav { display: flex; align-items: center; gap: 4px; }
@@ -405,6 +405,7 @@
       width: min(360px, 84vw);
       margin-bottom: 40px;
       animation: heroEntrance 0.9s cubic-bezier(0.16,1,0.3,1) both;
+      mix-blend-mode: multiply;
     }
     @media (min-width: 768px) {
       .hero-logo { width: 400px; margin-bottom: 52px; }
