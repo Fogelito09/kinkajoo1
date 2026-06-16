@@ -1692,14 +1692,16 @@
 
     document.getElementById('modal-icon-img').src = g.icon;
     document.getElementById('modal-icon-img').alt = g.name + ' icon';
-    document.getElementById('modal-game-name').textContent = g.name;
+    document.getElementById('modal-game-name').innerHTML = rummikubToHTML(g.name);
 
     document.getElementById('modal-platform-badges').innerHTML = '';
 
     const descEl     = document.getElementById('modal-desc');
     const aboutLabel = document.getElementById('modal-about-label');
     const divider    = document.querySelector('.modal-divider');
-    descEl.textContent = g.desc;
+    descEl.innerHTML = rummikubToHTML(g.desc);
+    processRummikubImages(descEl);
+    processRummikubImages(document.getElementById('modal-game-name'));
     const hide = modalLinksOnly ? 'none' : '';
     descEl.style.display     = hide;
     aboutLabel.style.display = hide;
@@ -1889,43 +1891,48 @@
     updateNav(0);
   }());
 
-  /* ── Remove white/gray checkerboard from inline hero logos ── */
-  (function () {
-    function removeBg(img) {
-      const c = document.createElement('canvas');
-      c.width  = img.naturalWidth;
-      c.height = img.naturalHeight;
-      const ctx = c.getContext('2d');
-      ctx.drawImage(img, 0, 0);
-      const id = ctx.getImageData(0, 0, c.width, c.height);
-      const d  = id.data;
-      // Remove neutral (white/gray checkerboard) pixels
-      for (let i = 0; i < d.length; i += 4) {
-        const r = d[i], g = d[i+1], b = d[i+2];
-        if ((r + g + b) / 3 > 200 && Math.max(r, g, b) - Math.min(r, g, b) < 40) d[i+3] = 0;
-      }
-      ctx.putImageData(id, 0, 0);
-      // Trim transparent padding — find tight bounding box of visible pixels
-      let x0 = c.width, y0 = c.height, x1 = 0, y1 = 0;
-      for (let y = 0; y < c.height; y++) {
-        for (let x = 0; x < c.width; x++) {
-          if (d[(y * c.width + x) * 4 + 3] > 10) {
-            if (x < x0) x0 = x; if (x > x1) x1 = x;
-            if (y < y0) y0 = y; if (y > y1) y1 = y;
-          }
+  /* ── Remove white/gray checkerboard from Rummikub logo images ── */
+  function removeBg(img) {
+    const c = document.createElement('canvas');
+    c.width  = img.naturalWidth;
+    c.height = img.naturalHeight;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const id = ctx.getImageData(0, 0, c.width, c.height);
+    const d  = id.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const r = d[i], g = d[i+1], b = d[i+2];
+      if ((r + g + b) / 3 > 200 && Math.max(r, g, b) - Math.min(r, g, b) < 40) d[i+3] = 0;
+    }
+    ctx.putImageData(id, 0, 0);
+    let x0 = c.width, y0 = c.height, x1 = 0, y1 = 0;
+    for (let y = 0; y < c.height; y++) {
+      for (let x = 0; x < c.width; x++) {
+        if (d[(y * c.width + x) * 4 + 3] > 10) {
+          if (x < x0) x0 = x; if (x > x1) x1 = x;
+          if (y < y0) y0 = y; if (y > y1) y1 = y;
         }
       }
-      const t = document.createElement('canvas');
-      t.width  = x1 - x0 + 1;
-      t.height = y1 - y0 + 1;
-      t.getContext('2d').drawImage(c, x0, y0, t.width, t.height, 0, 0, t.width, t.height);
-      img.src = t.toDataURL();
     }
-    document.querySelectorAll('.hero-inline-logo, .rummikub-card-logo, .desc-inline-rummikub').forEach(function(img) {
+    const t = document.createElement('canvas');
+    t.width  = x1 - x0 + 1;
+    t.height = y1 - y0 + 1;
+    t.getContext('2d').drawImage(c, x0, y0, t.width, t.height, 0, 0, t.width, t.height);
+    img.src = t.toDataURL();
+  }
+
+  function processRummikubImages(root) {
+    (root || document).querySelectorAll('.hero-inline-logo, .rummikub-card-logo, .desc-inline-rummikub').forEach(function(img) {
       if (img.complete && img.naturalWidth) { removeBg(img); }
       else { img.addEventListener('load', function() { removeBg(img); }, { once: true }); }
     });
-  }());
+  }
+
+  function rummikubToHTML(text) {
+    return text.replace(/Rummikub®/g, '<img src="rummikubRed.png" alt="Rummikub®" class="desc-inline-rummikub">');
+  }
+
+  processRummikubImages();
 
 </script>
 
