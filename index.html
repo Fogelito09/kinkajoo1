@@ -1375,7 +1375,7 @@
         <div class="card-identity">
           <div class="game-icon"><img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/ICON_BLACK_1024x1024.png" alt="Rummikub®" loading="lazy" /></div>
         </div>
-        <img src="rummikub.png" alt="Rummikub® logo" class="rummikub-card-logo" />
+        <img src="rummikubRed.png" alt="Rummikub® logo" class="rummikub-card-logo" />
         <p class="game-desc">The original Rummikub® (not Rummy nor Rummi or Remy) is one of the most popular family games, played by millions of people all over the world. The unique combination of tactical thinking, luck and tense competition has made this classic family game to one of the most successful games for the past 60 years! Play against friends or strangers online. Available on iOS, Android, smart TVs and internet browsers. Arrange the tiles to create the smartest color and numbers combinations. Will you be the first player to place all tiles and win the match?</p>
         <button class="btn-read-more" data-links-only="true" data-modal="game-1" aria-label="Download and follow Rummikub®">
           Download &amp; Follow
@@ -1718,12 +1718,8 @@
     document.getElementById('modal-icon-img').src = g.icon;
     document.getElementById('modal-icon-img').alt = g.name + ' icon';
     const nameEl = document.getElementById('modal-game-name');
-    if (id === 'game-1') {
-      nameEl.textContent = g.name;
-    } else {
-      nameEl.innerHTML = rummikubToHTML(g.name);
-      processRummikubImages(nameEl);
-    }
+    nameEl.innerHTML = rummikubToHTML(g.name);
+    processRummikubImages(nameEl);
 
     document.getElementById('modal-platform-badges').innerHTML = '';
 
