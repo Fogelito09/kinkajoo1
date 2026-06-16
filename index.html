@@ -380,16 +380,6 @@
       pointer-events: none;
       overflow: hidden;
     }
-    .hero-bg::before {
-      content: '';
-      position: absolute;
-      width: 52px; height: 13px;
-      border-radius: 20px;
-      background: var(--pink);
-      opacity: 0.14;
-      top: 23%; left: 9%;
-      transform: rotate(-18deg);
-    }
     .hero-bg::after {
       content: '';
       position: absolute;
@@ -1176,6 +1166,7 @@
     .slider-viewport {
       overflow-x: scroll;
       scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
       -webkit-overflow-scrolling: touch;
       border-radius: var(--radius-lg);
       scrollbar-width: none;
@@ -1858,6 +1849,8 @@
     if (!total) return;
 
     let current = 0;
+    let programmatic = false;
+    let programmaticTimer = null;
 
     function updateNav(idx) {
       current = ((idx % total) + total) % total;
@@ -1871,8 +1864,11 @@
 
     function goTo(idx) {
       const next = ((idx % total) + total) % total;
+      programmatic = true;
+      clearTimeout(programmaticTimer);
       viewport.scrollTo({ left: next * viewport.offsetWidth, behavior: 'smooth' });
       updateNav(next);
+      programmaticTimer = setTimeout(function() { programmatic = false; }, 600);
     }
 
     prevBtn.addEventListener('click', () => goTo(current - 1));
@@ -1881,6 +1877,7 @@
 
     /* Sync nav when user swipes natively */
     viewport.addEventListener('scroll', () => {
+      if (programmatic) return;
       const idx = Math.round(viewport.scrollLeft / viewport.offsetWidth);
       if (idx !== current) updateNav(idx);
     }, { passive: true });
