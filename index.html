@@ -457,6 +457,7 @@
     .hero-inline-rummikub { height: 1.1em; position: relative; top: 0.15em; }
     .hero-inline-taki     { height: 1.1em; }
     .desc-inline-rummikub { height: 1em; width: auto; display: inline-block; vertical-align: middle; position: relative; top: 0.08em; }
+    .desc-inline-taki     { height: 1em; width: auto; display: inline-block; vertical-align: middle; }
 
     .hero-cta {
       display: flex;
@@ -1399,7 +1400,7 @@
           <div class="game-icon"><img src="https://kinkajoo-apps.com/wp-content/uploads/2024/12/icon_rounded-1024x1024.png" alt="TAKI" loading="lazy" /></div>
           <h3 class="game-name">TAKI</h3>
         </div>
-        <p class="game-desc">TAKI is a card game that combines an equal share of luck and strategy, which is the secret for its perfect game flow. Action cards, exciting rules and Super Taki cards will hook you right from the start and satisfy you like no other game. Play against 1-3 players.</p>
+        <p class="game-desc"><img src="taki.png" alt="TAKI" class="desc-inline-taki"> is a card game that combines an equal share of luck and strategy, which is the secret for its perfect game flow. Action cards, exciting rules and Super Taki cards will hook you right from the start and satisfy you like no other game. Play against 1-3 players.</p>
         <button class="btn-read-more" data-links-only="true" data-modal="game-3" aria-label="Download and follow TAKI">
           Download &amp; Follow
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -1922,7 +1923,7 @@
   }
 
   function processRummikubImages(root) {
-    (root || document).querySelectorAll('.hero-inline-logo, .rummikub-card-logo, .desc-inline-rummikub').forEach(function(img) {
+    (root || document).querySelectorAll('.hero-inline-logo, .rummikub-card-logo, .desc-inline-rummikub, .desc-inline-taki').forEach(function(img) {
       if (img.complete && img.naturalWidth) { removeBg(img); }
       else { img.addEventListener('load', function() { removeBg(img); }, { once: true }); }
     });
