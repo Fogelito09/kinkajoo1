@@ -1922,7 +1922,7 @@
     }
     document.querySelectorAll('.hero-inline-logo, .rummikub-card-logo').forEach(function(img) {
       if (img.complete && img.naturalWidth) { removeBg(img); }
-      else { img.addEventListener('load', function() { removeBg(img); }); }
+      else { img.addEventListener('load', function() { removeBg(img); }, { once: true }); }
     });
   }());
 
