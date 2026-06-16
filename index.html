@@ -274,8 +274,10 @@
       transform-origin: left;
       transition: transform var(--transition);
     }
-    .nav-link:hover { color: var(--nav-accent); }
-    .nav-link:hover::after { transform: scaleX(1); }
+    .nav-link:hover,
+    .nav-link.active { color: var(--nav-accent); }
+    .nav-link:hover::after,
+    .nav-link.active::after { transform: scaleX(1); }
     .nav-link:focus-visible { outline: 3px solid var(--nav-accent); outline-offset: 2px; }
 
     .hamburger {
@@ -1591,6 +1593,28 @@
   window.addEventListener('scroll', () => {
     header.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
+
+  /* ── Scroll spy: highlight active nav link ───────────── */
+  (function () {
+    const spySections = ['hero', 'games', 'about', 'contact'];
+    const navLinks    = document.querySelectorAll('.nav-link');
+    const OFFSET      = 120;
+
+    function updateActive() {
+      const scrollY = window.scrollY + OFFSET;
+      let active = spySections[0];
+      spySections.forEach(function(id) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= scrollY) active = id;
+      });
+      navLinks.forEach(function(link) {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + active);
+      });
+    }
+
+    window.addEventListener('scroll', updateActive, { passive: true });
+    updateActive();
+  }());
 
   /* ── Contact form ───────────────────────────────────── */
   const form    = document.getElementById('contact-form');
